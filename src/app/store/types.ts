@@ -443,7 +443,7 @@ export interface dataProductsByCat {
     instantDelivery: boolean | null;
     locale: string | null;
     localizations: string[]; // Replace 'any' with the specific type if known
-    orders: any[]; // Replace 'any' with the specific type if known
+    orders: string[]; // Replace 'any' with the specific type if known
   }>;
   meta: {
     pagination: {
@@ -525,7 +525,7 @@ interface ProductItemCartContext {
   instantDelivery: boolean;
   locale: string | null;
   localizations: string[];
-  orders: any[];
+  orders: string[];
   price: number;
   publishedAt: string;
   title: string;
