@@ -7,12 +7,12 @@ import { useSearchParams } from "next/navigation";
 const Page = () => {
   const searchParams = useSearchParams();
   const options = {
-    mode: "payment",
+    mode: "payment" as const, // Ensure mode is set as a literal type
     currency: "usd",
     amount: Number(searchParams.get("amount")) * 100,
   };
   const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
   );
 
   return (

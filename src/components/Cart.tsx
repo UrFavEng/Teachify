@@ -1,20 +1,26 @@
 "use client";
-import { CartContext } from "@/context/CartContext";
+import { useGetUserCartQuery } from "@/app/store/apislice";
+import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React from "react";
 interface CartProps {
   setShow: (val: boolean) => void;
 }
 const Cart = ({ setShow }: CartProps) => {
-  const { cart, setCart } = useContext(CartContext);
-  console.log("cart => ", cart);
+  const { user } = useUser();
+
+  const { data } = useGetUserCartQuery({
+    email: user?.primaryEmailAddress?.emailAddress,
+  });
+  // const { cart } = useContext(CartContext);
+  // console.log("cart => ", cart);
   return (
     <div
-      className=" h-[50vh] sm:h-[68vh] overflow-auto  z-10 absolute  right-[-50px] sm:right-1 top-[120%] rounded-lg shadow-lg w-[280px] sm:w-screen max-w-sm border border-shadowOrBorder bg-bgPrimary px-4 py-8 sm:px-6 lg:px-8"
+      className="popup h-[50vh] sm:h-[68vh] overflow-auto  z-10 absolute  right-[-50px] sm:right-1 top-[120%] rounded-lg shadow-lg w-[280px] sm:w-screen max-w-sm border border-shadowOrBorder bg-bgPrimary px-4 py-8 sm:px-6 lg:px-8"
       aria-modal="true"
       role="dialog"
-      tabIndex="-1"
+      tabIndex={-1}
     >
       <button
         onClick={() => setShow(false)}
@@ -37,22 +43,23 @@ const Cart = ({ setShow }: CartProps) => {
           />
         </svg>
       </button>
-
       <div className="mt-4 space-y-6">
         <ul className="space-y-4">
-          {cart?.map((e) => (
-            <li key={e.id} className="flex items-center gap-4">
+          {data?.data?.map((e) => (
+            <li key={e.products[0].id} className="flex items-center gap-4">
               <Image
                 width={100}
                 height={100}
                 alt=""
                 className=" aspect-video w-[100px] rounded object-cover"
-                src={e?.product?.products[0].banner?.url}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                src={e?.products[0].banner.url}
               />
 
               <div className=" mt-[-8px]">
                 <h3 className=" font-bold text-primary line-clamp-1">
-                  {e?.product?.products[0].title}
+                  {e?.products[0].title}
                 </h3>
 
                 <dl className=" space-y-px text-[10px] text-gray-600">
@@ -60,7 +67,7 @@ const Cart = ({ setShow }: CartProps) => {
                     <dt className="inline">Category: </dt>
                     <dd className="inline text-sec font-medium">
                       {" "}
-                      {e?.product?.products[0].category}
+                      {e?.products[0].category}
                     </dd>
                   </div>
 
@@ -68,7 +75,7 @@ const Cart = ({ setShow }: CartProps) => {
                     <dt className="inline">Price:</dt>
                     <dd className="inline text-sec font-medium">
                       {" "}
-                      {e?.product?.products[0].price} $
+                      {e?.products[0].price} $
                     </dd>
                   </div>
                 </dl>
@@ -82,7 +89,7 @@ const Cart = ({ setShow }: CartProps) => {
             href="/cart"
             className="block rounded border border-gray-600 px-5 py-3 text-sm text-gray-600 transition hover:ring-1 hover:ring-gray-400"
           >
-            View my cart ({cart.length})
+            View my cart ({data?.data.length})
           </Link>
 
           <a
@@ -92,7 +99,19 @@ const Cart = ({ setShow }: CartProps) => {
             Continue shopping
           </a>
         </div>
-      </div>
+      </div>{" "}
+      <style>{`
+  .popup {
+    transform: scale(0.5); /* تبدأ صغيرة */
+    animation: zoomIn 0.5s forwards;
+  }
+
+  @keyframes zoomIn {
+    to {
+      transform: scale(1); /* تكبر للحجم الطبيعي */
+    }
+  }
+`}</style>
     </div>
   );
 };

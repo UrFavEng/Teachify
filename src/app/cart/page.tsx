@@ -1,26 +1,41 @@
 "use client";
-
-import { CartContext } from "@/context/CartContext";
-import CartAPIs from "@/utils/CartAPIs";
+// import CartAPIs from "@/utils/CartAPIs";
 import Image from "next/image";
-import React, { useContext } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
+import { useDeleteCartMutation, useGetUserCartQuery } from "../store/apislice";
+import { useUser } from "@clerk/nextjs";
 
 const CartPage = () => {
-  const router = useRouter();
+  const { user } = useUser();
 
-  const { cart, setCart } = useContext(CartContext);
+  const { data } = useGetUserCartQuery({
+    email: user?.primaryEmailAddress?.emailAddress,
+  });
+  const router = useRouter();
+  console.log(data);
   const getTotalAmount = () => {
     let total = 0;
-    cart.forEach((item) => {
-      total = total + Number(item?.product?.products[0].price);
+    data?.data.forEach((item) => {
+      total = total + Number(item?.products[0]?.price);
     });
     return total;
   };
+  const [DeleteCart] = useDeleteCartMutation();
+
   const deleteItem = (id: string) => {
-    CartAPIs.deleteCart(id).then((res) =>
-      setCart((old) => old?.filter((i) => i?.product?.documentId !== id))
-    );
+    DeleteCart({ id })
+      .unwrap()
+      .then((fulfilled) => {
+        console.log(fulfilled);
+        // console.log("cart =>", cart);
+        console.log("id =>", id);
+        // setCart((old) => old?.filter((i) => i?.product?.documentId !== id));
+      })
+      .catch((rejected) => {
+        console.log(rejected);
+      });
+    // CartAPIs.deleteCart(id).then(() => {});
   };
   return (
     <section className=" min-h-[80vh]">
@@ -34,12 +49,15 @@ const CartPage = () => {
 
           <div className="mt-8">
             <ul className="space-y-4">
-              {cart.map((i) => (
-                <li key={i.id} className="flex items-center gap-4">
+              {data?.data.map((i) => (
+                <li key={i.products[0].id} className="flex items-center gap-4">
+                  <>{console.log(i)}</>
                   <Image
                     width={500}
                     height={400}
-                    src={i?.product?.products[0].banner?.url}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    src={i?.products[0].banner.url}
                     alt=""
                     className=" w-[140px] aspect-video rounded object-cover"
                   />
@@ -47,26 +65,28 @@ const CartPage = () => {
                   <div className="">
                     <h3 className="text-[18px]  mt-[-20px] font-bold text-primary ">
                       {" "}
-                      {i?.product?.products[0].title}
+                      {i?.products[0].title}
                     </h3>
 
                     <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
                       <div>
                         <dt className="inline">Category: </dt>
-                        <dd className="inline">
-                          {" "}
-                          {i?.product?.products[0].category}
-                        </dd>
+                        <dd className="inline"> {i?.products[0].category}</dd>
                       </div>
                     </dl>
                   </div>
 
                   <div className="flex flex-1 items-center justify-end gap-2">
                     <span className=" text-sec font-semibold text-[16px]">
-                      {i?.product?.products[0].price} ${" "}
+                      {i.products[0].price} ${" "}
                     </span>
                     <button
-                      onClick={() => deleteItem(i?.product?.documentId)}
+                      onClick={() => {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        deleteItem(i?.documentId);
+                        console.log("0000====>>>>", i);
+                      }}
                       className="text-gray-600 transition hover:text-red-600"
                     >
                       <span className="sr-only">Remove item</span>

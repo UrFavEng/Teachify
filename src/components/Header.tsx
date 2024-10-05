@@ -1,37 +1,33 @@
 "use client";
-import { CartContext } from "@/context/CartContext";
+// import { CartContext } from "@/context/CartContext";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cart from "./Cart";
-import CartAPIs from "@/utils/CartAPIs";
+// import CartAPIs from "@/utils/CartAPIs";
+import { useGetUserCartQuery } from "@/app/store/apislice";
 
 const Header = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { user } = useUser();
   const [logged, setLogged] = useState<boolean>(false);
   const [showCart, setShowCart] = useState<boolean>(false);
+  const { data } = useGetUserCartQuery({
+    email: user?.primaryEmailAddress?.emailAddress,
+  });
+  // console.log(data, isError, isLoading);
   useEffect(() => {
     setLogged(window.location.href.toString().includes("sign-in"));
   }, []);
-  const { user } = useUser();
   useEffect(() => {
-    getCartItems();
-  }, [user]);
-  const getCartItems = () => {
-    if (user?.primaryEmailAddress?.emailAddress) {
-      CartAPIs.getUserCartItems(user?.primaryEmailAddress?.emailAddress).then(
-        (res) => {
-          res.data.data.forEach((citem) => {
-            setCart((old) => [...old, { id: citem.id, product: citem }]);
-          });
-          console.log(res.data.data);
-        }
-      );
+    if (data) {
+      data.data.forEach((citem) => {
+        console.log(citem);
+      });
     }
-  };
-  console.log(cart);
+  }, [user, data]);
+
   return (
     !logged && (
       <header className="bg-white shadow-sm shadow-shadowOrBorder">
@@ -107,8 +103,12 @@ const Header = () => {
                         onClick={() => setShowCart(!showCart)}
                         className=" text-sec hover:text-hoverColor transition-all cursor-pointer ease-in-out"
                       />{" "}
-                      ({cart?.length})
-                      {showCart && <Cart setShow={setShowCart} />}
+                      ({data?.data.length})
+                      {showCart && (
+                        <>
+                          <Cart setShow={setShowCart} />
+                        </>
+                      )}
                     </div>
                     <UserButton afterSwitchSessionUrl="/" />
                   </div>

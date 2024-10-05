@@ -1,24 +1,23 @@
 "use client";
-import { CartContext } from "@/context/CartContext";
-import CartAPIs from "@/utils/CartAPIs";
+import {
+  useAddToCartMutation,
+  useGetUserCartQuery,
+} from "@/app/store/apislice";
+import {
+  AddToCartRequest,
+  FileDataById,
+  ImageFormatById,
+  OrderById,
+  RichTextBlock,
+} from "@/app/store/types";
 import { useUser } from "@clerk/nextjs";
 import { AlertOctagon, BadgeCheck, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect } from "react";
+import React from "react";
+import Swal from "sweetalert2";
 interface HeaderProductProps {
   allProduct: {
-    id: number;
-    documentId: string;
-    title: string;
-    description: {
-      children: {
-        text: string;
-        type: string;
-      }[];
-      type: string;
-    }[];
-    price: number;
     banner: {
       alternativeText: string | null;
       caption: string | null;
@@ -26,173 +25,87 @@ interface HeaderProductProps {
       documentId: string;
       ext: string;
       formats: {
-        medium: {
-          ext: string;
-          hash: string;
-          height: number;
-          mime: string;
-          name: string;
-          path: string | null;
-          provider_metadata: {
-            public_id: string;
-          };
-          resource_type: string;
-          size: number;
-          sizeInBytes: number;
-          url: string;
-          width: number;
-        };
-        small: {
-          ext: string;
-          hash: string;
-          height: number;
-          mime: string;
-          name: string;
-          path: string | null;
-          provider_metadata: {
-            public_id: string;
-          };
-          resource_type: string;
-          size: number;
-          sizeInBytes: number;
-          url: string;
-          width: number;
-        };
-        thumbnail: {
-          ext: string;
-          hash: string;
-          height: number;
-          mime: string;
-          name: string;
-          path: string | null;
-          provider_metadata: {
-            public_id: string;
-          };
-          resource_type: string;
-          size: number;
-          sizeInBytes: number;
-          url: string;
-          width: number;
-        };
+        small: ImageFormatById;
+        thumbnail: ImageFormatById;
       };
       hash: string;
       height: number;
-      id: number;
-      locale: string | null;
       mime: string;
       name: string;
-      previewUrl: string | null;
-      provider: string;
       provider_metadata: {
         public_id: string;
+        resource_type: string;
       };
-      resource_type: string;
-      publishedAt: string;
       size: number;
-      updatedAt: string;
       url: string;
       width: number;
     };
     category: string;
     createdAt: string;
-    files: {
-      alternativeText: string | null;
-      caption: string | null;
-      createdAt: string;
-      documentId: string;
-      ext: string;
-      formats: null;
-      hash: string;
-      height: number | null;
-      id: number;
-      locale: string | null;
-      mime: string;
-      name: string;
-      previewUrl: string | null;
-      provider: string;
-      provider_metadata: {
-        public_id: string;
-      };
-      resource_type: string;
-      publishedAt: string;
-      size: number;
-      updatedAt: string;
-      url: string;
-      width: number | null;
-    }[];
+    description: Array<RichTextBlock>;
+    documentId: string;
+    files: Array<FileDataById>;
+    id: number;
     instantDelivery: boolean;
     locale: string | null;
-    localizations: string[]; // Adjust type based on actual structure
+    localizations: Array<string>;
+    orders: Array<OrderById>;
+    price: number;
     publishedAt: string;
+    title: string;
     updatedAt: string;
-    whatsIncluded: {
-      children: {
-        text: string;
-        type: string;
-      }[];
-      type: string;
-    }[];
+    whatsIncluded: Array<RichTextBlock>;
   };
 }
 
 const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
-  const { cart, setCart } = useContext(CartContext);
-  console.log(cart);
+  const handleDone = () => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "In Cart",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
   const { user } = useUser();
+
+  const { data: dataCartUser } = useGetUserCartQuery({
+    email: user?.primaryEmailAddress?.emailAddress,
+  });
   const router = useRouter();
-  const handleAddToCart = () => {
+  console.log("====////====", dataCartUser?.data);
+  const [AddtoCart] = useAddToCartMutation();
+  const AddToCartFun = () => {
     if (user) {
-      const data = {
+      const data: AddToCartRequest = {
         data: {
-          userName: user.fullName,
-          email: user.primaryEmailAddress?.emailAddress,
+          userName: user.fullName as string,
+          email: user.primaryEmailAddress?.emailAddress as string,
           products: [allProduct.id],
         },
       };
-      console.log(allProduct.documentId);
-
-      console.log(
-        cart.some(
-          (i) => i?.product?.products[0]?.documentId === allProduct.documentId
-        )
-      );
       if (
-        cart.some(
-          (i) => i?.product?.products[0]?.documentId === allProduct.documentId
+        !dataCartUser?.data.some(
+          (i) => i.products[0].documentId === allProduct.documentId
         )
       ) {
-        return;
-      } else {
-        CartAPIs.addToCart(data)
-          .then((res) => {
-            console.log(res.data.data);
-            setCart((old) => [
-              ...old,
-              { id: res.data.data.id, product: { products: [allProduct] } },
-            ]);
+        AddtoCart(data)
+          .unwrap()
+          .then((fulfilled) => {
+            console.log(fulfilled);
+            handleDone();
           })
-          .catch((err) => console.log(err));
+          .catch((rejected) => {
+            console.log(rejected);
+          });
+      } else {
+        handleDone();
       }
     } else {
       router.push("/sign-in");
     }
   };
-  // useEffect(() => {
-  //   getCartItem();
-  // }, [user]);
-  // const getCartItem = () => {
-  //   console.log("getCartItem");
-  //   if (user?.primaryEmailAddress?.emailAddress) {
-  //     CartAPIs.getUserCartItems(user?.primaryEmailAddress?.emailAddress)
-  //       .then((res) => {
-  //         res.data.data.forEach((citem) => {
-  //           setCart((old) => [...old, { id: citem.id, product: citem }]);
-  //           // setCart((old) => [...old, {}]);
-  //         });
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
   return (
     <section className="px-4 sm:px-0">
       <div className="mx-auto max-w-screen-xl py-8 sm:py-12 lg:py-16">
@@ -237,7 +150,7 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
                   {allProduct.price} $
                 </p>
                 <button
-                  onClick={() => handleAddToCart()}
+                  onClick={() => AddToCartFun()}
                   className="mt-2 flex gap-1 items-center rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px] text-[16px] font-medium text-bgPrimary hover:bg-hoverColor hover:text-primary"
                 >
                   <ShoppingCart /> Add to cart

@@ -1,21 +1,32 @@
 import React from "react";
-import { Course } from "./ProductSection";
 import ProductCard from "./ProductCard";
+import { CourseData } from "@/app/store/types";
 interface ProductListProps {
   course:
-    | Course[]
-    | {
+    | CourseData[]
+    | Array<{
         id: number;
         documentId: string;
         title: string;
-        description: {
-          children: {
+        description: Array<{
+          children: Array<{
             text: string;
             type: string;
-          }[];
+          }>;
           type: string;
-        }[];
+        }>;
         price: number;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+        category: string;
+        whatsIncluded: Array<{
+          children: Array<{
+            text: string;
+            type: string;
+          }>;
+          type: string;
+        }>;
         banner: {
           alternativeText: string | null;
           caption: string | null;
@@ -23,7 +34,7 @@ interface ProductListProps {
           documentId: string;
           ext: string;
           formats: {
-            medium: {
+            large?: {
               ext: string;
               hash: string;
               height: number;
@@ -32,14 +43,14 @@ interface ProductListProps {
               path: string | null;
               provider_metadata: {
                 public_id: string;
+                resource_type: string;
               };
-              resource_type: string;
               size: number;
-              sizeInBytes: number;
+              sizeInBytes?: number;
               url: string;
               width: number;
             };
-            small: {
+            medium?: {
               ext: string;
               hash: string;
               height: number;
@@ -48,14 +59,14 @@ interface ProductListProps {
               path: string | null;
               provider_metadata: {
                 public_id: string;
+                resource_type: string;
               };
-              resource_type: string;
               size: number;
-              sizeInBytes: number;
+              sizeInBytes?: number;
               url: string;
               width: number;
             };
-            thumbnail: {
+            small?: {
               ext: string;
               hash: string;
               height: number;
@@ -64,10 +75,26 @@ interface ProductListProps {
               path: string | null;
               provider_metadata: {
                 public_id: string;
+                resource_type: string;
               };
-              resource_type: string;
               size: number;
-              sizeInBytes: number;
+              sizeInBytes?: number;
+              url: string;
+              width: number;
+            };
+            thumbnail?: {
+              ext: string;
+              hash: string;
+              height: number;
+              mime: string;
+              name: string;
+              path: string | null;
+              provider_metadata: {
+                public_id: string;
+                resource_type: string;
+              };
+              size: number;
+              sizeInBytes?: number;
               url: string;
               width: number;
             };
@@ -82,17 +109,15 @@ interface ProductListProps {
           provider: string;
           provider_metadata: {
             public_id: string;
+            resource_type: string;
           };
-          resource_type: string;
           publishedAt: string;
           size: number;
           updatedAt: string;
           url: string;
           width: number;
         };
-        category: string;
-        createdAt: string;
-        files: {
+        files: Array<{
           alternativeText: string | null;
           caption: string | null;
           createdAt: string;
@@ -109,27 +134,19 @@ interface ProductListProps {
           provider: string;
           provider_metadata: {
             public_id: string;
+            resource_type: string;
           };
-          resource_type: string;
           publishedAt: string;
           size: number;
           updatedAt: string;
           url: string;
           width: number | null;
-        }[];
-        instantDelivery: boolean;
+        }>;
+        instantDelivery: boolean | null;
         locale: string | null;
-        localizations: string[]; // Adjust type based on actual structure
-        publishedAt: string;
-        updatedAt: string;
-        whatsIncluded: {
-          children: {
-            text: string;
-            type: string;
-          }[];
-          type: string;
-        }[];
-      }[];
+        localizations: string[]; // Replace 'any' with the specific type if known
+        orders: any[]; // Replace 'any' with the specific type if known
+      }>;
 }
 const ProductList = ({ course }: ProductListProps) => {
   return (

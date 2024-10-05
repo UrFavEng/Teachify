@@ -4,9 +4,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
-import { CartContext } from "@/context/CartContext";
-import { useState } from "react";
 import Footer from "@/components/Footer";
+import { store } from "./store/store";
+import { Provider } from "react-redux";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,20 +28,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [cart, setCart] = useState([]);
   return (
     <ClerkProvider>
-      <CartContext.Provider value={{ cart, setCart }}>
+      <Provider store={store}>
+        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+        {/* @ts-ignore */}
         <html lang="en">
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F3F4F7]`}
+            className={`${geistSans.variable} overflow-x-hidden ${geistMono.variable} antialiased bg-[#F3F4F7]`}
           >
             <Header />
             {children}
             <Footer />
           </body>
         </html>
-      </CartContext.Provider>
+      </Provider>
     </ClerkProvider>
   );
 }
