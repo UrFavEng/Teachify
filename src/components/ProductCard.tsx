@@ -146,7 +146,7 @@ interface ProductCardProps {
         instantDelivery: boolean | null;
         locale: string | null;
         localizations: string[]; // Replace 'any' with the specific type if known
-        orders: any[]; // Replace 'any' with the specific type if known
+        orders: string[]; // Replace 'any' with the specific type if known
       }
     | CourseData;
 }
