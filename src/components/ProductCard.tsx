@@ -158,7 +158,7 @@ const ProductCard = ({ course }: ProductCardProps) => {
       onClick={() => router.push(`/product-details/${course.documentId}`)}
       className="px-2 py-2 bg-white rounded-lg cursor-pointer transition-all ease-in-out transform hover:scale-105 shadow-sm hover:border-2 hover:border-shadowOrBorder hover:shadow-lg"
     >
-      <div className="w-full max-w-xs relative">
+      <div className="w-full max-w-xs relative m-auto">
         <Image
           src={course?.banner?.url} // Add fallback in case no image is available
           alt="Banner"
