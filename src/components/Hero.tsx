@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Hero = () => {
@@ -26,12 +27,12 @@ const Hero = () => {
               Get Started
             </a>
 
-            <a
+            <Link
               className="block transition-all ease-in-out w-full rounded px-12 py-3 text-sm font-medium text-primary bg-bgPrimary shadow  focus:outline-none hover:bg-primary hover:text-bgPrimary sm:w-auto"
-              href="#"
+              href="/about-us"
             >
-              Learn More
-            </a>
+              About us
+            </Link>
           </div>
         </div>
       </div>

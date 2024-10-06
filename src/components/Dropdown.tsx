@@ -5,8 +5,11 @@ import { useClerk } from "@clerk/clerk-react";
 import { ChevronLeft, Menu } from "lucide-react";
 import DropdownCat from "./DropdownCat";
 import Link from "next/link";
+import SearchInSM from "./SearchInSM";
 
 export default function Dropdown() {
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
+
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState(false);
@@ -54,10 +57,7 @@ export default function Dropdown() {
           <>
             {user && (
               <>
-                <a
-                  href="#"
-                  className="flex items-center p-3 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
+                <p className="flex items-center p-3 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
                   <Image
                     width={100}
                     height={100}
@@ -73,7 +73,7 @@ export default function Dropdown() {
                       {user?.primaryEmailAddress?.emailAddress}
                     </p>
                   </div>
-                </a>
+                </p>
                 <hr className="border-gray-200 dark:border-gray-700" />
                 <a
                   onClick={() => setView(true)}
@@ -87,6 +87,7 @@ export default function Dropdown() {
               </>
             )}
             <Link
+              onClick={() => setIsOpen(false)}
               href="/"
               className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
             >
@@ -97,20 +98,26 @@ export default function Dropdown() {
               className="flex items-center relative px-4 py-3 text-sm cursor-pointer text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               <ChevronLeft size={12} className=" mt-1 ml-[-12px]" /> Category
-              {showCate && <DropdownCat setShow={setShowCate} />}
+              {showCate && (
+                <DropdownCat setShow={setShowCate} setIsOpen={setIsOpen} />
+              )}
             </p>
-            <a
-              href="#"
+            <p
+              onClick={() => {
+                setIsOpenSearch(true);
+                setIsOpen(false);
+              }}
               className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
             >
-              Projects
-            </a>
-            <a
-              href="#"
+              Search{" "}
+            </p>
+            <Link
+              onClick={() => setIsOpen(false)}
+              href="/about-us"
               className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               About Us
-            </a>
+            </Link>
             <a
               href="#"
               className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -131,7 +138,8 @@ export default function Dropdown() {
             )}
           </>
         </div>
-      )}
+      )}{" "}
+      {isOpenSearch && <SearchInSM setShow={setIsOpenSearch} />}
     </div>
   );
 }

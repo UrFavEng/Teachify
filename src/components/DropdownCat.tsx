@@ -3,8 +3,9 @@ import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 interface CartProps {
   setShow: (val: boolean) => void;
+  setIsOpen?: (val: boolean) => void;
 }
-const DropdownCat = ({ setShow }: CartProps) => {
+const DropdownCat = ({ setShow, setIsOpen }: CartProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -39,7 +40,12 @@ const DropdownCat = ({ setShow }: CartProps) => {
         <div className="p-2">
           {uniqueCategories.map((cat) => (
             <Link
-              onClick={() => setShow(false)}
+              onClick={() => {
+                setShow(false);
+                if (setIsOpen) {
+                  setIsOpen(false);
+                }
+              }}
               href={"/category/" + cat.toLowerCase()}
               key={cat}
               className="block rounded-lg text-[13px]  capitalize sm:text-[16px] px-2 sm:px-4 py-1 sm:py-2 font-medium text-white md:text-primary hover:bg-gray-50 hover:text-gray-700"

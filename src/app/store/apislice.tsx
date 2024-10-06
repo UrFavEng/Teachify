@@ -69,6 +69,10 @@ export const apiSlice = createApi({
     getAllCat: builder.query<getAllCat, void>({
       query: () => `products?fields=category`,
     }),
+    searchProducts: builder.query({
+      query: (title) =>
+        `products?filters[title][$contains]=${title}&populate=*`,
+    }),
   }),
 });
 
@@ -83,4 +87,5 @@ export const {
   useDeleteCartMutation,
   useCreateOrderMutation,
   useGetAllCatQuery,
+  useSearchProductsQuery,
 } = apiSlice;

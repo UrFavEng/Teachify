@@ -10,6 +10,7 @@ import Cart from "./Cart";
 import { useGetUserCartQuery } from "@/app/store/apislice";
 import Dropdown from "./Dropdown";
 import DropdownCat from "./DropdownCat";
+import ModalSearch from "./Search";
 
 const Header = () => {
   const { user } = useUser();
@@ -68,23 +69,19 @@ const Header = () => {
                 </li>
 
                 <li>
-                  <a
-                    className="text-primary transition-all ease-in-out hover:text-hoverColor text-[15px] font-medium"
-                    href="#"
-                  >
-                    {" "}
-                    Projects
-                  </a>
+                  <div className="text-primary cursor-pointer transition-all ease-in-out hover:text-hoverColor text-[15px] font-medium">
+                    <ModalSearch />
+                  </div>
                 </li>
 
                 <li>
-                  <a
+                  <Link
                     className="text-primary transition-all ease-in-out hover:text-hoverColor text-[15px] font-medium"
-                    href="#"
+                    href="/about-us"
                   >
                     {" "}
                     About Us
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
