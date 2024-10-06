@@ -3,20 +3,38 @@ import { useGetUserCartQuery } from "@/app/store/apislice";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 interface CartProps {
   setShow: (val: boolean) => void;
 }
 const Cart = ({ setShow }: CartProps) => {
-  const { user } = useUser();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const { user } = useUser();
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShow(false); // إغلاق القائمة
+      }
+    };
+
+    // إضافة المستمع للحدث عند النقر في أي مكان في الصفحة
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // تنظيف المستمع عند فك الكومبوننت
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   const { data } = useGetUserCartQuery({
     email: user?.primaryEmailAddress?.emailAddress,
   });
-  // const { cart } = useContext(CartContext);
-  // console.log("cart => ", cart);
   return (
     <div
+      ref={dropdownRef}
       className="popup h-[50vh] sm:h-[68vh] overflow-auto  z-10 absolute  right-[-50px] sm:right-1 top-[120%] rounded-lg shadow-lg w-[280px] sm:w-screen max-w-sm border border-shadowOrBorder bg-bgPrimary px-4 py-8 sm:px-6 lg:px-8"
       aria-modal="true"
       role="dialog"
@@ -102,13 +120,13 @@ const Cart = ({ setShow }: CartProps) => {
       </div>{" "}
       <style>{`
   .popup {
-    transform: scale(0.5); /* تبدأ صغيرة */
-    animation: zoomIn 0.5s forwards;
+    transform: translateY(-1%); /* تبدأ من خارج الشاشة */
+    animation: slideDown 0.3s forwards;
   }
 
-  @keyframes zoomIn {
+  @keyframes slideDown {
     to {
-      transform: scale(1); /* تكبر للحجم الطبيعي */
+      transform: translateY(0); /* تتحرك لمكانها الطبيعي */
     }
   }
 `}</style>

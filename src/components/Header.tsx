@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import Cart from "./Cart";
 // import CartAPIs from "@/utils/CartAPIs";
 import { useGetUserCartQuery } from "@/app/store/apislice";
+import Dropdown from "./Dropdown";
 
 const Header = () => {
   const { user } = useUser();
@@ -110,7 +111,10 @@ const Header = () => {
                         </>
                       )}
                     </div>
-                    <UserButton afterSwitchSessionUrl="/" />
+                    <div className=" hidden mt-[10px] md:block">
+                      {" "}
+                      <UserButton afterSwitchSessionUrl="/" />
+                    </div>
                   </div>
                 ) : (
                   <>
@@ -120,19 +124,14 @@ const Header = () => {
                     >
                       Login
                     </a>
-
-                    <a
-                      className="block rounded-md transition-all ease-in-out text-primary px-[18px] py-[8px] text-[16px] font-medium bg-bgPrimary  hover:bg-primary hover:text-bgPrimary"
-                      href=""
-                    >
-                      Register
-                    </a>
                   </>
                 )}
                 {}
               </div>
-
-              <button className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
+              <div className=" md:hidden">
+                <Dropdown />
+              </div>
+              {/* <button className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
                 <span className="sr-only">Toggle menu</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +147,7 @@ const Header = () => {
                     d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
