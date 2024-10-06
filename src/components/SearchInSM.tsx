@@ -16,15 +16,18 @@ const SearchInSM = ({ setShow }: SearchInSMProps) => {
     setShow(false);
   };
   return (
-    <div>
+    <div className=" items-center">
       <div
-        className="fixed inset-0 z-10 overflow-y-auto popup"
+        className="fixed  inset-0 z-10 overflow-y-auto popup"
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true"
       >
-        <div className=" absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"></div>
-        <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div
+          onClick={() => setShow(false)}
+          className=" absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"
+        ></div>
+        <div className="flex items-center  justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           <span
             className="hidden sm:inline-block sm:h-screen sm:align-middle"
             aria-hidden="true"
