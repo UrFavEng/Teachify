@@ -35,7 +35,7 @@ const Cart = ({ setShow }: CartProps) => {
   return (
     <div
       ref={dropdownRef}
-      className="popup h-[50vh] sm:h-[68vh] overflow-auto  z-10 absolute  right-[-50px] sm:right-1 top-[120%] rounded-lg shadow-lg w-[280px] sm:w-screen max-w-sm border border-shadowOrBorder bg-bgPrimary px-4 py-8 sm:px-6 lg:px-8"
+      className="popup h-[50vh] sm:h-[68vh] overflow-auto  z-50 absolute  right-[-50px] sm:right-1 top-[155%] md:top-[135%] rounded-lg shadow-lg w-[280px] sm:w-screen max-w-sm border border-shadowOrBorder bg-bgPrimary px-4 py-8 sm:px-6 lg:px-8"
       aria-modal="true"
       role="dialog"
       tabIndex={-1}

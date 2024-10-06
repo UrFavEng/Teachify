@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { RedirectToUserProfile, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useClerk } from "@clerk/clerk-react";
-import { Menu } from "lucide-react";
+import { ChevronLeft, Menu } from "lucide-react";
+import DropdownCat from "./DropdownCat";
+import Link from "next/link";
 
 export default function Dropdown() {
   const { user } = useUser();
@@ -22,6 +24,8 @@ export default function Dropdown() {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
+        setShowCate(false);
+
         setIsOpen(false); // إغلاق القائمة
       }
     };
@@ -34,6 +38,7 @@ export default function Dropdown() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const [showCate, setShowCate] = useState<boolean>(false);
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
@@ -45,7 +50,7 @@ export default function Dropdown() {
         <Menu className="  mt-1  " size={16} />
       </button>
       {isOpen && (
-        <div className="absolute right-0 z-20 w-[225px] sm:w-64 py-2 mt-2 overflow-hidden origin-top-right bg-white rounded-md shadow-xl dark:bg-gray-800">
+        <div className="absolute right-0 z-20 w-[225px] sm:w-64 py-2 mt-2 origin-top-right bg-white rounded-md shadow-xl dark:bg-gray-800">
           <>
             {user && (
               <>
@@ -81,18 +86,19 @@ export default function Dropdown() {
                 {view && <RedirectToUserProfile />}
               </>
             )}
-            <a
-              href="#"
+            <Link
+              href="/"
               className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               Home
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+            </Link>
+            <p
+              onClick={() => setShowCate(!showCate)}
+              className="flex items-center relative px-4 py-3 text-sm cursor-pointer text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
             >
-              Explore
-            </a>
+              <ChevronLeft size={12} className=" mt-1 ml-[-12px]" /> Category
+              {showCate && <DropdownCat setShow={setShowCate} />}
+            </p>
             <a
               href="#"
               className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"

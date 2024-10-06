@@ -669,3 +669,19 @@ export interface CreateOrderReq {
     products: string[];
   };
 }
+//----------
+export interface getAllCat {
+  data: {
+    id: number;
+    documentId: string;
+    category: string;
+  }[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}

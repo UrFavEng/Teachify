@@ -6,12 +6,14 @@ import {
   CourseResponse,
   CreateOrderReq,
   dataProductsByCat,
+  getAllCat,
   ProductById,
 } from "./types";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://strapi-ecom-1-production.up.railway.app/api/",
+    // baseUrl: "http://localhost:1337/api/",
     prepareHeaders(headers) {
       headers.set(
         "Authorization",
@@ -64,6 +66,9 @@ export const apiSlice = createApi({
         body,
       }),
     }),
+    getAllCat: builder.query<getAllCat, void>({
+      query: () => `products?fields=category`,
+    }),
   }),
 });
 
@@ -77,4 +82,5 @@ export const {
   useGetUserCartQuery,
   useDeleteCartMutation,
   useCreateOrderMutation,
+  useGetAllCatQuery,
 } = apiSlice;

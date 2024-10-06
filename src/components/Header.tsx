@@ -1,7 +1,7 @@
 "use client";
 // import { CartContext } from "@/context/CartContext";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { ShoppingCart } from "lucide-react";
+import { ChevronDown, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -9,11 +9,13 @@ import Cart from "./Cart";
 // import CartAPIs from "@/utils/CartAPIs";
 import { useGetUserCartQuery } from "@/app/store/apislice";
 import Dropdown from "./Dropdown";
+import DropdownCat from "./DropdownCat";
 
 const Header = () => {
   const { user } = useUser();
   const [logged, setLogged] = useState<boolean>(false);
   const [showCart, setShowCart] = useState<boolean>(false);
+  const [showCate, setShowCate] = useState<boolean>(false);
   const { data } = useGetUserCartQuery({
     email: user?.primaryEmailAddress?.emailAddress,
   });
@@ -55,13 +57,14 @@ const Header = () => {
                   </Link>
                 </li>
                 <li>
-                  <a
-                    className="text-primary transition-all ease-in-out hover:text-hoverColor text-[15px] font-medium"
-                    href="#"
+                  <p
+                    className="text-primary  flex items-center justify-center transition-all ease-in-out hover:text-hoverColor text-[15px] font-medium"
+                    onClick={() => setShowCate(!showCate)}
                   >
                     {" "}
-                    Explore
-                  </a>
+                    Category <ChevronDown size={16} className=" mt-1" />
+                  </p>
+                  {showCate && <DropdownCat setShow={setShowCate} />}
                 </li>
 
                 <li>
