@@ -119,7 +119,7 @@ const Header = () => {
                 ) : (
                   <>
                     <a
-                      className="block rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px] text-[16px] font-medium text-bgPrimary  hover:bg-hoverColor hover:text-primary"
+                      className="block rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px]  text-[14px] sm:text-[16px] font-medium text-bgPrimary  hover:bg-hoverColor hover:text-primary"
                       href="/sign-in"
                     >
                       Login

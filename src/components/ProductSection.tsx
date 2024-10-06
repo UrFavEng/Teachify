@@ -7,7 +7,7 @@ import { PulseLoader } from "react-spinners";
 const ProductSection = () => {
   const { data, isError, isLoading } = useGetAllProductsQuery();
   return (
-    <div id="LatestProducts" className=" container mx-auto py-8 px-4 sm:px-0 ">
+    <div id="LatestProducts" className=" container mx-auto py-8 px-4 ">
       <h1 className=" mb-6 text-[24px] font-bold text-primary">
         Our Latest Products
       </h1>
@@ -20,7 +20,7 @@ const ProductSection = () => {
         <>
           {" "}
           {isError ? (
-            <p className=" h-[28vh] font-bold text-[32px] flex items-center justify-center text-red-500">
+            <p className=" h-[28vh]  font-bold text-[32px] flex items-center justify-center text-red-500">
               Internal Server Error
             </p>
           ) : (

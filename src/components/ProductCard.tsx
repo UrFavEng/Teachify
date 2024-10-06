@@ -169,16 +169,16 @@ const ProductCard = ({ course }: ProductCardProps) => {
       </div>
       <div className="mt-2">
         <div className=" flex items-center justify-between ">
-          <h3 className=" text-primary font-semibold text-[18px] line-clamp-1">
+          <h3 className=" text-primary font-medium sm:font-semibold sm:text-[18px] line-clamp-1">
             {course.title}
           </h3>
-          <span className=" text-[16px] font-medium text-primary">
+          <span className=" text-[14px] sm:text-[16px] font-medium text-primary">
             {course.price} $
           </span>
         </div>
-        <div className=" flex items-center gap-1 text-[14px] font-medium text-primary">
+        <div className=" capitalize flex items-center gap-1 text-[12px] sm:text-[14px] font-medium text-primary">
           <ChartBarStackedIcon size={18} color="#000" />
-          {course.category}
+          {course.category.toLowerCase()}
         </div>
       </div>
     </div>
