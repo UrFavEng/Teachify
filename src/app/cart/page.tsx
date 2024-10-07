@@ -85,7 +85,7 @@ const CartPage = () => {
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
                         deleteItem(i?.documentId);
-                        console.log("0000====>>>>", i);
+                        // console.log("0000====>>>>", i);
                       }}
                       className="text-gray-600 transition hover:text-red-600"
                     >

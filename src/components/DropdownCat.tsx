@@ -32,7 +32,7 @@ const DropdownCat = ({ setShow, setIsOpen }: CartProps) => {
 
   console.log(uniqueCategories);
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative z-20 " ref={dropdownRef}>
       <div
         className="absolute end-0 popup mt-[-20px] md:top-0 right-[70px] md:right-[-50px] z-10 md:mt-4 w-[130px] sm:w-56 rounded-md md:border md:border-gray-100 bg-primary md:bg-white shadow-lg"
         role="menu"

@@ -15,7 +15,7 @@ const ModalSearch = () => {
     setIsOpen(false);
   };
   return (
-    <div className="relative flex justify-center">
+    <div className="relative z-20 flex justify-center">
       <button
         onClick={() => setIsOpen(true)}
         className="text-primary flex items-center justify-center gap-1 cursor-pointer transition-all ease-in-out hover:text-hoverColor text-[15px] font-medium"
