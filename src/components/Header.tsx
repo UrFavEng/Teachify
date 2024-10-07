@@ -37,7 +37,7 @@ const Header = () => {
     !logged && (
       <>
         {" "}
-        <header className="bg-white  border-b-2 ">
+        <header className="bg-white  border-b-[1px] ">
           <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
             <Link href={"/"}>
               {" "}
@@ -88,13 +88,13 @@ const Header = () => {
                   </li>
 
                   <li>
-                    <a
+                    <Link
                       className="text-primary transition-all ease-in-out hover:text-hoverColor text-[15px] font-medium"
-                      href="#"
+                      href="/contact-us"
                     >
                       {" "}
                       Contact US
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
