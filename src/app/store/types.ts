@@ -685,3 +685,15 @@ export interface getAllCat {
     };
   };
 }
+//-
+
+export interface CreateReviewReq {
+  data: {
+    rating: number | null;
+    comment: string;
+    product: string;
+    userName: string | null;
+    userId: string;
+    imgUrl: string;
+  };
+}

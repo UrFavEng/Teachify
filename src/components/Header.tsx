@@ -25,13 +25,6 @@ const Header = () => {
   useEffect(() => {
     setLogged(window.location.href.toString().includes("sign-in"));
   }, []);
-  useEffect(() => {
-    if (data) {
-      data.data.forEach((citem) => {
-        console.log(citem);
-      });
-    }
-  }, [user, data]);
 
   return (
     !logged && (

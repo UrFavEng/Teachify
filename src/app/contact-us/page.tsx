@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 const Page = () => {
   const { user } = useUser();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (user) {
@@ -28,8 +29,8 @@ const Page = () => {
   };
 
   return (
-    <div className=" min-h-[75vh] flex items-center justify-center">
-      <section className="relative flex flex-col gap-12 md:flex-row  items-center justify-between container mx-4 sm:mx-auto">
+    <div className="min-h-[75vh] flex items-center justify-center">
+      <section className="relative px-2 xl:px-8 flex flex-col gap-12 md:flex-row  items-center justify-between container mx-4 sm:mx-auto">
         <div className="">
           <div className="mx-auto max-w-lg">
             <h1 className="text-2xl mt-12 font-bold text-primary sm:text-3xl">
@@ -94,7 +95,7 @@ const Page = () => {
                 type="submit"
                 className="block shadow-2xl rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px]  text-[14px] sm:text-[16px] font-medium text-bgPrimary  hover:bg-hoverColor hover:text-primary"
               >
-                Sign in
+                Send
               </button>
             </div>
           </form>

@@ -5,7 +5,7 @@ import React from "react";
 const Hero = () => {
   return (
     <section className="bg-gray-50 ">
-      <div className="mx-auto px-4 gap-6 xl:gap-12 py-12 md:py-16 lg:py-24 xl:py-32 lg:flex lg:h-[80vh] lg:items-center flex flex-col-reverse lg:flex-row items-center justify-around">
+      <div className="mx-auto px-4 gap-6 xl:gap-12 pt-12 md:pt-16 lg:pt-0 xl:pt-4 lg:flex lg:h-[75vh] lg:items-center flex flex-col-reverse pb-16 lg:pb-0 lg:flex-row items-center justify-around">
         <div className=" max-w-xl">
           <h1 className="text-3xl font-extrabold lg:text-4xl xl:text-5xl  text-hoverColor">
             Master New Skills with

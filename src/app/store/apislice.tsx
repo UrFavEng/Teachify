@@ -5,6 +5,7 @@ import {
   ApiResponseGetCartUser,
   CourseResponse,
   CreateOrderReq,
+  CreateReviewReq,
   dataProductsByCat,
   getAllCat,
   ProductById,
@@ -17,12 +18,12 @@ export const apiSlice = createApi({
     prepareHeaders(headers) {
       headers.set(
         "Authorization",
-        `Bearer 8fd9a2e8758e83744cf2bfd98bd8931dfe99d9fc10d19db07360b0016cd56197f0f6429473ddd4255c1c5b0281f5a93b832ac4c4f64fdac009fcc9d040317c2bcfffc254a9068211c60860ea9e1c518405986e852f83e998f3917f569604c84a65cf3531ef6d552aac6a50cf52b64fa1fa38017dddf31de9c33346efd6c92291`
+        `Bearer a5d56bfa8fe46f31c13310a00272ff713ca1ea58896da0274e10aa9a02b80d38a095e890065f3a2bd9cab1b34f2baf4b570dd24bb04fe0fbfd4f3f891f3bdf8e6420c2f307ba2a9f1a3f04e247eb31891c5c010d2fca49d018af7b789797e11817129d384f3186c6c193c38f80d89ff4c315fcff373b06ec87b9afe51950ecba`
       );
       return headers;
     },
   }),
-  tagTypes: ["cart"],
+  tagTypes: ["cart", "review"],
   endpoints: (builder) => ({
     getAllProducts: builder.query<CourseResponse, void>({
       query: () => `products?populate=*`,
@@ -73,6 +74,33 @@ export const apiSlice = createApi({
       query: (title) =>
         `products?filters[title][$contains]=${title}&populate=*`,
     }),
+    getReviewsByProductId: builder.query({
+      query: (productId) => `/reviews?product=${productId}`,
+      providesTags: ["review"],
+    }),
+    addReview: builder.mutation<void, CreateReviewReq>({
+      query: (newReview) => ({
+        url: "/reviews",
+        method: "POST",
+        body: newReview,
+      }),
+      invalidatesTags: ["review"],
+    }),
+    updateReview: builder.mutation({
+      query: ({ id, review }) => ({
+        url: `/reviews/${id}`, // Using PUT to update the review
+        method: "PUT",
+        body: review,
+      }),
+      invalidatesTags: ["review"],
+    }),
+    deleteReview: builder.mutation({
+      query: (id) => ({
+        url: `/reviews/${id}`, // DELETE request to the review ID
+        method: "DELETE",
+      }),
+      invalidatesTags: ["review"],
+    }),
   }),
 });
 
@@ -88,4 +116,8 @@ export const {
   useCreateOrderMutation,
   useGetAllCatQuery,
   useSearchProductsQuery,
+  useGetReviewsByProductIdQuery,
+  useAddReviewMutation,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
 } = apiSlice;

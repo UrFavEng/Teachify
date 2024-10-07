@@ -151,7 +151,7 @@ interface ProductCardProps {
     | CourseData;
 }
 const ProductCard = ({ course }: ProductCardProps) => {
-  console.log(course);
+  // console.log(course);
   const router = useRouter();
   return (
     <div

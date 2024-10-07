@@ -15,7 +15,7 @@ export default function Dropdown() {
   const [view, setView] = useState(false);
   const { signOut } = useClerk();
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  // console.log(user?.imageUrl);
   const handleLogout = async () => {
     await signOut();
   };

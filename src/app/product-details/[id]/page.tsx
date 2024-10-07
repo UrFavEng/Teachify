@@ -1,32 +1,164 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumb";
 // import ProductApis from "@/utils/ProductApis";
-import React from "react";
+import React, { useState } from "react";
 import HeaderProduct from "../_components/HeaderProduct";
 import ProductList from "@/components/ProductList";
 import {
+  useAddReviewMutation,
   useGetAllProductsByCatQuery,
   useGetProductByIdQuery,
 } from "@/app/store/apislice";
 import Image from "next/image";
+import Reviews from "@/components/Reviews";
+import { Rating } from "@mui/material";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { PulseLoader } from "react-spinners";
+import Swal from "sweetalert2";
+import { useUser } from "@clerk/nextjs";
+
 interface pageProps {
   params: { id: string };
 }
-
+export interface ReviewREQ {
+  comment: string;
+  rate: number | null;
+  bookId: string | undefined | null | number;
+}
 const ProductPage = ({ params }: pageProps) => {
+  const { user } = useUser();
+
+  const [value, setValue] = useState<number | null>(null);
+  const [errRate, setErrRate] = useState<string>("");
+  const handleSuccess = () => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Done",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
   const { data } = useGetProductByIdQuery({
     id: params.id,
   });
   const { data: dataProductsByCat } = useGetAllProductsByCatQuery({
     cat: data?.data.category,
   });
+  const [postReview] = useAddReviewMutation();
 
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<ReviewREQ>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit: SubmitHandler<ReviewREQ> = (data, event) => {
+    if (user) {
+      setErrRate("");
+      const newReview = {
+        data: {
+          rating: value,
+          comment: data.comment,
+          product: params.id,
+          userName: user?.fullName,
+          userId: user?.id,
+          imgUrl: user?.imageUrl,
+        },
+      };
+      if (value !== null) {
+        postReview(newReview)
+          .unwrap()
+          .then(() => {
+            // console.log(fulfilled);
+            reset();
+            setValue(null);
+            handleSuccess();
+          })
+          .catch((rejected) => {
+            console.log(rejected.status);
+            if (rejected.status == 400) {
+              Swal.fire({
+                position: "center",
+                icon: "info",
+                title: "You have already provided a comment and a rating",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
+      } else {
+        setErrRate("You Forget The Rate");
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "You must login!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
   return (
     <div>
       <div className=" container mx-auto my-10 px-4">
         {" "}
         {data && <Breadcrumb title={data?.data.title} />}
         {data && <HeaderProduct allProduct={data?.data} />}
+        {data && <Reviews id={params.id} />}{" "}
+        <div className=" container mx-auto  my-6 rounded-md hover:shadow-md transition px-4 py-4 bg-white">
+          {false ? (
+            <h3 className=" text-[18px] font-medium text-teal-700">
+              You have already provided a comment and a rating
+            </h3>
+          ) : (
+            <>
+              <h1 className=" mb-2 text-primary font-semibold text-[22px]">
+                Add Review
+              </h1>
+              <form onSubmit={handleSubmit(onSubmit)} className="">
+                <div className=" mb-4  flex-col sm:flex-row flex items-center justify-start gap-3">
+                  <div className=" w-full sm:w-[80%]">
+                    {" "}
+                    <input
+                      {...register("comment", {
+                        required: "comment is required",
+                      })}
+                      className=" rounded-lg outline-none w-full text-primary font-medium text-[18px] h-12 pl-4 bg-bgPrimary shadow-md border-shadowOrBorder border-[1px]"
+                      type="text"
+                      placeholder="Add Review"
+                    />
+                  </div>
+                  <div>
+                    {" "}
+                    <Rating
+                      name="simple-controlled"
+                      value={value}
+                      onChange={(event, newValue) => {
+                        setValue(newValue);
+                      }}
+                    />
+                  </div>
+                </div>{" "}
+                <p className=" font-medium text-red-500 mb-3">
+                  {errors.comment?.message}
+                </p>
+                <p className=" font-medium text-red-500 mb-3">{errRate}</p>
+                {false ? (
+                  <PulseLoader color="#3B4158" />
+                ) : (
+                  <input
+                    type="submit"
+                    value="Add"
+                    className="block cursor-pointer shadow-2xl rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px]  text-[14px] sm:text-[16px] font-medium text-bgPrimary  hover:bg-hoverColor hover:text-primary"
+                  />
+                )}
+              </form>
+            </>
+          )}
+        </div>
         <div className=" py-8 mt-4">
           <h2 className=" text-primary font-bold mb-2 text-[28px] px-2">
             Similar products

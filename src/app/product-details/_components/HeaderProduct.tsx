@@ -74,7 +74,6 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
     email: user?.primaryEmailAddress?.emailAddress,
   });
   const router = useRouter();
-  console.log("====////====", dataCartUser?.data);
   const [AddtoCart] = useAddToCartMutation();
   const AddToCartFun = () => {
     if (user) {
@@ -92,8 +91,7 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
       ) {
         AddtoCart(data)
           .unwrap()
-          .then((fulfilled) => {
-            console.log(fulfilled);
+          .then(() => {
             handleDone();
           })
           .catch((rejected) => {
@@ -118,7 +116,7 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
                 alt="banner"
                 width={550}
                 height={580}
-                className="m-auto lg:m-0 rounded-lg"
+                className="m-auto border-[1px] shadow-sm lg:m-0 rounded-lg"
               />
             ) : (
               <div className="w-full h-full bg-gray-300 animate-pulse rounded-lg" />
