@@ -79,7 +79,7 @@ const ReviewCard = (item: {
           </div>
           <div className="bg-[#f1f1f1] rounded-md py-1 px-4 w-[90%] relative">
             <h1 className="flex justify-between items-center">
-              <span className="text-[14px] sm:text-[18px] capitalize font-medium text-hoverColor">
+              <span className="text-[14px] line-clamp-1 sm:text-[18px] capitalize font-medium text-hoverColor">
                 {item?.item?.userName}
               </span>
               <span className="text-[10px] flex items-center gap-1 flex-row-reverse text-sec sm:text-[12px]">

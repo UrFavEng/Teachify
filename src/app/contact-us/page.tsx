@@ -1,22 +1,44 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 import { useUser } from "@clerk/nextjs";
 import Swal from "sweetalert2";
+import emailjs from "emailjs-com";
 
 const Page = () => {
+  const form = useRef<HTMLFormElement>(null);
   const { user } = useUser();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (user) {
-      Swal.fire({
-        position: "center",
-        icon: "info",
-        title: "Still under development",
-        showConfirmButton: false,
-        timer: 2500,
-      });
+      // Send the email using EmailJS
+      if (form.current) {
+        try {
+          const result = await emailjs.sendForm(
+            "service_uob2p0j", // Your Gmail Service ID
+            "template_e339qcp", // Your Template ID from EmailJS
+            form.current, // The form data to send
+            "q7o27W3T9wHqfUS5e" // Your User ID from EmailJS
+          );
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Email sent successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } catch (error) {
+          console.log(error);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Failed to send email",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
     } else {
       Swal.fire({
         position: "center",
@@ -43,7 +65,33 @@ const Page = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className=" flex flex-col gap-4 mt-8">
+          <form
+            onSubmit={handleSubmit}
+            className=" flex flex-col gap-4 mt-8"
+            ref={form}
+          >
+            {" "}
+            <input type="hidden" name={"to_name"} value={"Ahmed Shafek"} />
+            <input
+              type="hidden"
+              name={"from_name"}
+              value={user?.fullName ?? ""}
+            />
+            <div>
+              <label htmlFor="Subject" className="sr-only">
+                Subject
+              </label>
+
+              <div className="relative">
+                <input
+                  name="Subject"
+                  required
+                  type="text"
+                  className=" rounded-lg outline-none w-full text-primary font-medium text-[18px] h-12 pl-4 bg-bgPrimary shadow-2xl border-shadowOrBorder border-[1px]"
+                  placeholder="Subject"
+                />
+              </div>
+            </div>
             <div>
               <label htmlFor="email" className="sr-only">
                 Email
@@ -51,6 +99,7 @@ const Page = () => {
 
               <div className="relative">
                 <input
+                  name="user_email"
                   required
                   type="email"
                   className=" rounded-lg outline-none w-full text-primary font-medium text-[18px] h-12 pl-4 bg-bgPrimary shadow-2xl border-shadowOrBorder border-[1px]"
@@ -82,6 +131,7 @@ const Page = () => {
 
               <div className="relative">
                 <textarea
+                  name="message"
                   required
                   id="Content"
                   className=" resize-none rounded-lg outline-none w-full text-primary font-medium text-[18px] pt-2 h-[164px] pl-4 bg-bgPrimary shadow-2xl border-shadowOrBorder border-[1px]"
@@ -89,7 +139,6 @@ const Page = () => {
                 ></textarea>
               </div>
             </div>
-
             <div className="flex items-center justify-between">
               <button
                 type="submit"
