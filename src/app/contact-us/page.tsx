@@ -21,6 +21,7 @@ const Page = () => {
             form.current, // The form data to send
             "q7o27W3T9wHqfUS5e" // Your User ID from EmailJS
           );
+          console.log(result);
           Swal.fire({
             position: "center",
             icon: "success",
