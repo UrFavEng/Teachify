@@ -11,8 +11,10 @@ const ModalSearch = () => {
     const form = e.target as HTMLFormElement;
     const firstInputValue = (form.elements[0] as HTMLInputElement).value;
     console.log(firstInputValue);
-    router.push("/search/" + firstInputValue);
-    setIsOpen(false);
+    if (firstInputValue) {
+      router.push("/search/" + firstInputValue);
+      setIsOpen(false);
+    }
   };
   return (
     <div className="relative z-20 flex justify-center">
@@ -63,6 +65,7 @@ const ModalSearch = () => {
 
                 <label className="block mt-3">
                   <input
+                    required
                     type="text"
                     name="Name"
                     id="Name"
