@@ -68,7 +68,7 @@ const CheckoutForm = ({ amount }: CheckoutFormProps) => {
       clientSecret,
       elements,
       confirmParams: {
-        return_url: "http://localhost:3000/payment-confirm",
+        return_url: "https://teachify-nine.vercel.app/payment-confirm",
       },
     });
 

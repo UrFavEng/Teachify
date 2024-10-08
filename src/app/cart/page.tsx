@@ -135,14 +135,19 @@ const CartPage = () => {
                 </dl>
 
                 <div className="flex justify-end">
-                  <button
-                    onClick={() =>
-                      router.push(`/checkout?amount=${getTotalAmount()}`)
-                    }
-                    className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
-                  >
-                    Checkout
-                  </button>
+                  {getTotalAmount() !== 0 && (
+                    <>
+                      {" "}
+                      <button
+                        onClick={() =>
+                          router.push(`/checkout?amount=${getTotalAmount()}`)
+                        }
+                        className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
+                      >
+                        Checkout
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
