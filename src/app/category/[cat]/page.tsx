@@ -5,12 +5,17 @@ import ProductList from "@/components/ProductList";
 import { ArrowDownWideNarrow } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
+import { PulseLoader } from "react-spinners";
 interface pageProps {
   params: { cat: string };
 }
 const Page = ({ params }: pageProps) => {
   const [price, setPrice] = useState("asc");
-  const { data: dataProductsByCat } = useGetAllProductsByCatQuery({
+  const {
+    data: dataProductsByCat,
+    isLoading,
+    isFetching,
+  } = useGetAllProductsByCatQuery({
     cat: params?.cat.toUpperCase(),
     price,
   });
@@ -32,9 +37,23 @@ const Page = ({ params }: pageProps) => {
             Price <ArrowDownWideNarrow size={18} className=" text-primary" />{" "}
           </p>
         </div>
-        <div className=" mt-4">
-          {dataProductsByCat && <ProductList course={dataProductsByCat.data} />}
-        </div>{" "}
+        {isLoading && isFetching ? (
+          <PulseLoader color="#3B4158" className=" text-center" />
+        ) : (
+          <>
+            {" "}
+            <div className=" mt-4">
+              {dataProductsByCat && (
+                <ProductList course={dataProductsByCat.data} />
+              )}
+              {dataProductsByCat?.data.length == 0 && (
+                <p className=" text-[18px] font-semibold text-sec">
+                  No courses in this category
+                </p>
+              )}
+            </div>{" "}
+          </>
+        )}
       </div>
 
       <div className="bg-white py-8 pt-[52px]">

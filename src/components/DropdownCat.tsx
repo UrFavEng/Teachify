@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import { useGetCategoriesQuery } from "@/app/store/apislice";
+import { PulseLoader } from "react-spinners";
 
 interface CartProps {
   setShow: (val: boolean) => void;
@@ -26,7 +27,7 @@ const DropdownCat = ({ setShow, setIsOpen }: CartProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const { data } = useGetCategoriesQuery();
+  const { data, isLoading, isFetching } = useGetCategoriesQuery();
 
   return (
     <div className="relative z-20 " ref={dropdownRef}>
@@ -35,22 +36,35 @@ const DropdownCat = ({ setShow, setIsOpen }: CartProps) => {
         role="menu"
       >
         <div className="p-2">
-          {data?.data.map((cat) => (
-            <Link
-              onClick={() => {
-                setShow(false);
-                if (setIsOpen) {
-                  setIsOpen(false);
-                }
-              }}
-              href={"/category/" + cat?.title.toLowerCase()}
-              key={cat.documentId}
-              className="block rounded-lg text-[13px]  capitalize sm:text-[16px] px-2 sm:px-4 py-1 sm:py-2 font-medium text-white md:text-primary hover:bg-gray-50 hover:text-gray-700"
-              role="menuitem"
-            >
-              {cat?.title.toLowerCase()}
-            </Link>
-          ))}
+          {isLoading && isFetching ? (
+            <>
+              <PulseLoader
+                size={10}
+                className=" text-center my-4"
+                color="#3B4158"
+              />
+            </>
+          ) : (
+            <>
+              {" "}
+              {data?.data.map((cat) => (
+                <Link
+                  onClick={() => {
+                    setShow(false);
+                    if (setIsOpen) {
+                      setIsOpen(false);
+                    }
+                  }}
+                  href={"/category/" + cat?.title.toLowerCase()}
+                  key={cat.documentId}
+                  className="block rounded-lg text-[13px]  capitalize sm:text-[16px] px-2 sm:px-4 py-1 sm:py-2 font-medium text-white md:text-primary hover:bg-gray-50 hover:text-gray-700"
+                  role="menuitem"
+                >
+                  {cat?.title.toLowerCase()}
+                </Link>
+              ))}
+            </>
+          )}
         </div>
       </div>{" "}
       <style>{`

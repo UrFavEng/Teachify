@@ -4,14 +4,14 @@ import Breadcrumb from "@/components/Breadcrumb";
 import ProductList from "@/components/ProductList";
 import Image from "next/image";
 import React from "react";
+import { PulseLoader } from "react-spinners";
 interface PageProps {
   params: { name: string };
 }
 const Page = ({ params }: PageProps) => {
-  const { data } = useSearchProductsQuery(params.name, {
+  const { data, isLoading, isFetching } = useSearchProductsQuery(params.name, {
     skip: !params.name,
   });
-  console.log(data);
   return (
     <div>
       <div className=" min-h-[78vh] container mx-auto px-4">
@@ -20,9 +20,18 @@ const Page = ({ params }: PageProps) => {
           {" "}
           <Breadcrumb title={params.name} />
         </div>
-        <div className=" mt-8 mb-6">
-          <ProductList course={data?.data} />
-        </div>
+        {isLoading && isFetching ? (
+          <>
+            <PulseLoader className=" text-center my-12" color="#3B4158" />
+          </>
+        ) : (
+          <>
+            {" "}
+            <div className=" mt-8 mb-6">
+              <ProductList course={data?.data} />
+            </div>
+          </>
+        )}
       </div>
       <div className="bg-white py-8 pt-[52px]">
         {" "}

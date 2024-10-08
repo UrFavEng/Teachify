@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import PopUpEditReview from "./PopUpEditReview";
 import { useDeleteReviewMutation } from "@/app/store/apislice";
 import Swal from "sweetalert2";
+import { PulseLoader } from "react-spinners";
 
 const ReviewCard = (item: {
   item: {
@@ -24,7 +25,7 @@ const ReviewCard = (item: {
 }) => {
   const { user } = useUser();
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
-  const [deleteReview] = useDeleteReviewMutation();
+  const [deleteReview, { isLoading }] = useDeleteReviewMutation();
   const handleSuccess = () => {
     Swal.fire({
       position: "center",
@@ -82,16 +83,23 @@ const ReviewCard = (item: {
                 {item?.item?.userName}
               </span>
               <span className="text-[10px] flex items-center gap-1 flex-row-reverse text-sec sm:text-[12px]">
-                {formatDate(item?.item?.updatedAt)}
-                <span className="cursor-pointer text-[18px] text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {user?.id == item?.item?.userId && (
-                    <Trash2
-                      size={16}
-                      className=" text-red-500"
-                      onClick={() => handleDelete()}
-                    />
-                  )}
-                </span>
+                {isLoading ? (
+                  <PulseLoader color="#3B4158" size={10} />
+                ) : (
+                  <>
+                    {" "}
+                    {formatDate(item?.item?.updatedAt)}
+                    <span className="cursor-pointer text-[18px] text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {user?.id == item?.item?.userId && (
+                        <Trash2
+                          size={16}
+                          className=" text-red-500"
+                          onClick={() => handleDelete()}
+                        />
+                      )}
+                    </span>
+                  </>
+                )}
               </span>
             </h1>
             <div className="ml-[-2px]">

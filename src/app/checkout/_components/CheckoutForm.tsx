@@ -13,12 +13,22 @@ import {
 } from "@stripe/react-stripe-js";
 import { StripeError } from "@stripe/stripe-js";
 import { useState } from "react";
+import { PulseLoader } from "react-spinners";
+import Swal from "sweetalert2";
 interface CheckoutFormProps {
   amount: number;
 }
 const CheckoutForm = ({ amount }: CheckoutFormProps) => {
   const { user } = useUser();
-
+  const handleSuccess = () => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Done",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   console.log(errorMessage, loading);
@@ -80,6 +90,7 @@ const CheckoutForm = ({ amount }: CheckoutFormProps) => {
     DeleteCart({ id })
       .unwrap()
       .then((fulfilled) => {
+        handleSuccess();
         console.log(fulfilled);
         // console.log("cart =>", cart);
         console.log("id =>", id);
@@ -129,9 +140,16 @@ const CheckoutForm = ({ amount }: CheckoutFormProps) => {
         {" "}
         <PaymentElement />
       </div>
-      <button className=" bg-primary py-2 mt-6 rounded-lg px-6 text-shadowOrBorder transition-all ease-in-out hover:bg-bgPrimary hover:text-primary">
-        Submit
-      </button>
+      {loading ? (
+        <PulseLoader color="#3B4158" className=" mt-4" />
+      ) : (
+        <>
+          {" "}
+          <button className=" bg-primary py-2 mt-6 rounded-lg px-6 text-shadowOrBorder transition-all ease-in-out hover:bg-bgPrimary hover:text-primary">
+            Submit
+          </button>
+        </>
+      )}
     </form>
   );
 };

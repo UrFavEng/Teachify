@@ -2,6 +2,7 @@
 import { useUpdateReviewMutation } from "@/app/store/apislice";
 import { Rating } from "@mui/material";
 import { useEffect, useState } from "react";
+import { PulseLoader } from "react-spinners";
 import Swal from "sweetalert2";
 
 interface PopUpEditReviewProps {
@@ -21,7 +22,7 @@ interface PopUpEditReviewProps {
   };
 }
 const PopUpEditReview = ({ setShowPopUp, item }: PopUpEditReviewProps) => {
-  const [updateReview] = useUpdateReviewMutation();
+  const [updateReview, { isLoading }] = useUpdateReviewMutation();
   const handleSuccess = () => {
     Swal.fire({
       position: "center",
@@ -43,6 +44,7 @@ const PopUpEditReview = ({ setShowPopUp, item }: PopUpEditReviewProps) => {
       .unwrap()
       .then((fulfilled) => {
         handleSuccess();
+        setShowPopUp(false);
         console.log(fulfilled);
       })
       .catch((rejected) => {
@@ -98,13 +100,22 @@ const PopUpEditReview = ({ setShowPopUp, item }: PopUpEditReviewProps) => {
                   />
                 </div>
                 <div className="gap-2 flex items-center">
-                  {" "}
-                  <button
-                    onClick={() => HandleEdit()}
-                    className="cursor-pointer shadow-2xl rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px]  text-[14px] sm:text-[16px] font-medium text-bgPrimary  hover:bg-hoverColor hover:text-primary"
-                  >
-                    Save
-                  </button>
+                  {isLoading ? (
+                    <>
+                      <PulseLoader color="#3B4158" size={10} />
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <button
+                        onClick={() => HandleEdit()}
+                        className="cursor-pointer shadow-2xl rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px]  text-[14px] sm:text-[16px] font-medium text-bgPrimary  hover:bg-hoverColor hover:text-primary"
+                      >
+                        Save
+                      </button>
+                    </>
+                  )}
+
                   <button
                     onClick={() => setShowPopUp(false)}
                     className="bg-gray-400 hover:bg-gray-300 text-gray-900 py-2 px-4 rounded"

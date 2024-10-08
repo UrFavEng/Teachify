@@ -41,15 +41,19 @@ const ProductPage = ({ params }: pageProps) => {
       timer: 1500,
     });
   };
-  const { data } = useGetProductByIdQuery({
+  const { data, isLoading, isFetching } = useGetProductByIdQuery({
     id: params.id,
   });
-  const { data: dataProductsByCat } = useGetAllProductsByCatQuery({
+  const {
+    data: dataProductsByCat,
+    isLoading: loading,
+    isFetching: fetching,
+  } = useGetAllProductsByCatQuery({
     cat: data?.data.category.title,
     price,
   });
   console.log("dataProductsByCat", dataProductsByCat);
-  const [postReview] = useAddReviewMutation();
+  const [postReview, { isLoading: loadingAdd }] = useAddReviewMutation();
 
   const {
     handleSubmit,
@@ -108,10 +112,22 @@ const ProductPage = ({ params }: pageProps) => {
   return (
     <div>
       <div className=" container mx-auto my-10 px-4">
-        {" "}
-        {data && <Breadcrumb title={data?.data.title} />}
-        {data && <HeaderProduct allProduct={data?.data} />}
-        {data && <Reviews id={params.id} />}{" "}
+        {isLoading && isFetching ? (
+          <>
+            {" "}
+            <PulseLoader
+              color="#3B4158"
+              className=" text-center mt-[20vh] mb-[20vh]"
+            />
+          </>
+        ) : (
+          <>
+            {" "}
+            {data && <Breadcrumb title={data?.data.title} />}
+            {data && <HeaderProduct allProduct={data?.data} />}
+            {data && <Reviews id={params.id} />}{" "}
+          </>
+        )}
         <div className=" container mx-auto  my-6 rounded-md hover:shadow-md transition px-4 py-4 bg-white">
           {false ? (
             <h3 className=" text-[18px] font-medium text-teal-700">
@@ -150,7 +166,7 @@ const ProductPage = ({ params }: pageProps) => {
                   {errors.comment?.message}
                 </p>
                 <p className=" font-medium text-red-500 mb-3">{errRate}</p>
-                {false ? (
+                {loadingAdd ? (
                   <PulseLoader color="#3B4158" />
                 ) : (
                   <input
@@ -177,7 +193,22 @@ const ProductPage = ({ params }: pageProps) => {
               Price <ArrowDownWideNarrow size={18} className=" text-primary" />{" "}
             </p>
           </div>
-          {dataProductsByCat && <ProductList course={dataProductsByCat.data} />}
+          {fetching && loading ? (
+            <>
+              {" "}
+              <PulseLoader
+                color="#3B4158"
+                className=" mt-[10vh] mb-[10vh] text-center"
+              />
+            </>
+          ) : (
+            <>
+              {" "}
+              {dataProductsByCat && (
+                <ProductList course={dataProductsByCat.data} />
+              )}
+            </>
+          )}{" "}
         </div>{" "}
       </div>
 

@@ -12,15 +12,21 @@ import Dropdown from "./Dropdown";
 import DropdownCat from "./DropdownCat";
 import ModalSearch from "./Search";
 import NavBar from "./NavBar";
+import { PulseLoader } from "react-spinners";
 
 const Header = () => {
   const { user } = useUser();
   const [logged, setLogged] = useState<boolean>(false);
   const [showCart, setShowCart] = useState<boolean>(false);
   const [showCate, setShowCate] = useState<boolean>(false);
-  const { data } = useGetUserCartQuery({
-    email: user?.primaryEmailAddress?.emailAddress,
-  });
+  const { data, isLoading, isFetching } = useGetUserCartQuery(
+    {
+      email: user?.primaryEmailAddress?.emailAddress,
+    },
+    {
+      skip: !user?.primaryEmailAddress?.emailAddress,
+    }
+  );
   // console.log(data, isError, isLoading);
   useEffect(() => {
     setLogged(window.location.href.toString().includes("sign-in"));
@@ -96,11 +102,21 @@ const Header = () => {
                   {user ? (
                     <div className=" items-center gap-4 flex">
                       <div className=" relative flex items-center gap-1 text-primary">
-                        <ShoppingCart
-                          onClick={() => setShowCart(!showCart)}
-                          className=" text-sec hover:text-hoverColor transition-all cursor-pointer ease-in-out"
-                        />{" "}
-                        ({data?.data.length})
+                        {isLoading && isFetching ? (
+                          <>
+                            <PulseLoader size={8} color="#3B4158" />
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            <ShoppingCart
+                              onClick={() => setShowCart(!showCart)}
+                              className=" text-sec hover:text-hoverColor transition-all cursor-pointer ease-in-out"
+                            />{" "}
+                            ({data?.data.length})
+                          </>
+                        )}
+
                         {showCart && (
                           <>
                             <Cart setShow={setShowCart} />

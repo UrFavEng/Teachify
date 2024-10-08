@@ -15,6 +15,7 @@ import { AlertOctagon, BadgeCheck, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { PulseLoader } from "react-spinners";
 import Swal from "sweetalert2";
 interface HeaderProductProps {
   allProduct: {
@@ -68,9 +69,22 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
       timer: 1500,
     });
   };
+  const handleErr = () => {
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "Something wrong, try later",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
   const { user } = useUser();
 
-  const { data: dataCartUser } = useGetUserCartQuery({
+  const {
+    data: dataCartUser,
+    isLoading,
+    isFetching,
+  } = useGetUserCartQuery({
     email: user?.primaryEmailAddress?.emailAddress,
   });
   const router = useRouter();
@@ -95,6 +109,7 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
             handleDone();
           })
           .catch((rejected) => {
+            handleErr();
             console.log(rejected);
           });
       } else {
@@ -147,12 +162,22 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
                 <p className="text-[28px] font-bold text-sec mt-3">
                   {allProduct.price} $
                 </p>
-                <button
-                  onClick={() => AddToCartFun()}
-                  className="mt-2 flex gap-1 items-center rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px] text-[16px] font-medium text-bgPrimary hover:bg-hoverColor hover:text-primary"
-                >
-                  <ShoppingCart /> Add to cart
-                </button>
+                {isFetching && isLoading ? (
+                  <>
+                    {" "}
+                    <PulseLoader className=" mt-4" color="#3B4158" />
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <button
+                      onClick={() => AddToCartFun()}
+                      className="mt-2 flex gap-1 items-center rounded-md transition-all ease-in-out bg-primary px-[18px] py-[8px] text-[16px] font-medium text-bgPrimary hover:bg-hoverColor hover:text-primary"
+                    >
+                      <ShoppingCart /> Add to cart
+                    </button>
+                  </>
+                )}
               </>
             ) : (
               <div className="space-y-4">

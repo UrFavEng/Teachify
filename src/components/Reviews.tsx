@@ -3,11 +3,12 @@
 import { useGetReviewsByProductIdQuery } from "@/app/store/apislice";
 import React from "react";
 import ReviewCard from "./ReviewCard";
+import { PulseLoader } from "react-spinners";
 interface pageProps {
   id: string;
 }
 const Reviews = ({ id }: pageProps) => {
-  const { data } = useGetReviewsByProductIdQuery({
+  const { data, isLoading, isFetching } = useGetReviewsByProductIdQuery({
     productId: id,
   });
   // console.log(data);
@@ -16,25 +17,35 @@ const Reviews = ({ id }: pageProps) => {
       <h1 className=" text-primary font-medium mb-4 text-[28px] text-center">
         Reviews
       </h1>
-      {data?.data && (
+      {isLoading && isFetching ? (
         <>
           {" "}
-          {data?.data.map(
-            (e: {
-              documentId: string;
-              comment: string;
-              createdAt: string;
-              id: number;
-              imgUrl: string;
-              locale: null;
-              publishedAt: string;
-              rating: number;
-              updatedAt: string;
-              userId: string;
-              userName: string;
-            }) => (
-              <ReviewCard item={e} key={e.documentId} />
-            )
+          <PulseLoader color="#3B4158" className="text-center my-8" />
+        </>
+      ) : (
+        <>
+          {" "}
+          {data?.data && (
+            <>
+              {" "}
+              {data?.data.map(
+                (e: {
+                  documentId: string;
+                  comment: string;
+                  createdAt: string;
+                  id: number;
+                  imgUrl: string;
+                  locale: null;
+                  publishedAt: string;
+                  rating: number;
+                  updatedAt: string;
+                  userId: string;
+                  userName: string;
+                }) => (
+                  <ReviewCard item={e} key={e.documentId} />
+                )
+              )}
+            </>
           )}
         </>
       )}

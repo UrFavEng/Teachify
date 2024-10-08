@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
+import { PulseLoader } from "react-spinners";
 interface CartProps {
   setShow: (val: boolean) => void;
 }
@@ -29,7 +30,7 @@ const Cart = ({ setShow }: CartProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const { data } = useGetUserCartQuery({
+  const { data, isLoading, isFetching } = useGetUserCartQuery({
     email: user?.primaryEmailAddress?.emailAddress,
   });
   return (
@@ -63,43 +64,56 @@ const Cart = ({ setShow }: CartProps) => {
       </button>
       <div className="mt-4 space-y-6">
         <ul className="space-y-4">
-          {data?.data?.map((e) => (
-            <li key={e.products[0].id} className="flex items-center gap-4">
-              <Image
-                width={100}
-                height={100}
-                alt=""
-                className=" aspect-video w-[100px] rounded object-cover"
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                src={e?.products[0].banner.url}
+          {isLoading && isFetching ? (
+            <>
+              <PulseLoader
+                size={14}
+                className=" text-center my-8"
+                color="#3B4158"
               />
+            </>
+          ) : (
+            <>
+              {" "}
+              {data?.data?.map((e) => (
+                <li key={e.products[0].id} className="flex items-center gap-4">
+                  <Image
+                    width={100}
+                    height={100}
+                    alt=""
+                    className=" aspect-video w-[100px] rounded object-cover"
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    src={e?.products[0].banner.url}
+                  />
 
-              <div className=" mt-[-8px]">
-                <h3 className=" font-bold text-primary line-clamp-1">
-                  {e?.products[0].title}
-                </h3>
+                  <div className=" mt-[-8px]">
+                    <h3 className=" font-bold text-primary line-clamp-1">
+                      {e?.products[0].title}
+                    </h3>
 
-                <dl className=" space-y-px text-[10px] text-gray-600">
-                  <div>
-                    <dt className="inline">Category: </dt>
-                    <dd className="inline text-sec font-medium">
-                      {" "}
-                      {e?.products[0].category}
-                    </dd>
+                    <dl className=" space-y-px text-[10px] text-gray-600">
+                      <div>
+                        <dt className="inline">Category: </dt>
+                        <dd className="inline text-sec font-medium">
+                          {" "}
+                          {e?.products[0].category}
+                        </dd>
+                      </div>
+
+                      <div>
+                        <dt className="inline">Price:</dt>
+                        <dd className="inline text-sec font-medium">
+                          {" "}
+                          {e?.products[0].price} $
+                        </dd>
+                      </div>
+                    </dl>
                   </div>
-
-                  <div>
-                    <dt className="inline">Price:</dt>
-                    <dd className="inline text-sec font-medium">
-                      {" "}
-                      {e?.products[0].price} $
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </li>
-          ))}
+                </li>
+              ))}
+            </>
+          )}
         </ul>
 
         <div className="space-y-4 text-center">

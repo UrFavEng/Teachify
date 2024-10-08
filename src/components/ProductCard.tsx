@@ -178,8 +178,7 @@ const ProductCard = ({ course }: ProductCardProps) => {
         </div>
         <div className=" capitalize flex items-center gap-1 text-[12px] sm:text-[14px] font-medium text-primary">
           <ChartBarStackedIcon size={18} color="#000" />
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
+
           {course.category.title.toLowerCase()}
         </div>
       </div>
