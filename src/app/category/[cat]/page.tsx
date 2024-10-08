@@ -2,14 +2,17 @@
 import { useGetAllProductsByCatQuery } from "@/app/store/apislice";
 import Breadcrumb from "@/components/Breadcrumb";
 import ProductList from "@/components/ProductList";
+import { ArrowDownWideNarrow } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 interface pageProps {
   params: { cat: string };
 }
 const Page = ({ params }: pageProps) => {
+  const [price, setPrice] = useState("asc");
   const { data: dataProductsByCat } = useGetAllProductsByCatQuery({
     cat: params?.cat.toUpperCase(),
+    price,
   });
   console.log(dataProductsByCat);
   return (
@@ -17,8 +20,18 @@ const Page = ({ params }: pageProps) => {
       <div className=" container px-4 mx-auto min-h-[76vh] py-8">
         {" "}
         <h1 className=" font-bold text-primary text-[26px] capitalize ">
-          <Breadcrumb title={params.cat} />
+          <Breadcrumb title={params?.cat} />
         </h1>
+        <div className=" pt-4 pl-1 ">
+          <p
+            onClick={() =>
+              price === "asc" ? setPrice("desc") : setPrice("asc")
+            }
+            className=" cursor-pointer text-primary font-medium  text-[16px] flex items-end gap-1"
+          >
+            Price <ArrowDownWideNarrow size={18} className=" text-primary" />{" "}
+          </p>
+        </div>
         <div className=" mt-4">
           {dataProductsByCat && <ProductList course={dataProductsByCat.data} />}
         </div>{" "}

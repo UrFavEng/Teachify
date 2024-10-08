@@ -18,6 +18,7 @@ import React from "react";
 import Swal from "sweetalert2";
 interface HeaderProductProps {
   allProduct: {
+    category: { title: string };
     banner: {
       alternativeText: string | null;
       caption: string | null;
@@ -40,7 +41,6 @@ interface HeaderProductProps {
       url: string;
       width: number;
     };
-    category: string;
     createdAt: string;
     description: Array<RichTextBlock>;
     documentId: string;
@@ -131,7 +131,7 @@ const HeaderProduct = ({ allProduct }: HeaderProductProps) => {
                   {allProduct.title}
                 </h2>
                 <p className="font-medium mt-[-2px] text-[14px] text-[#777]">
-                  {allProduct.category}
+                  {allProduct.category.title}
                 </p>
                 <p className="mt-4 leading-[22px] font-semibold text-gray-600">
                   {allProduct.description[0].children[0].text}

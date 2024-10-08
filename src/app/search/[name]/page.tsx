@@ -20,7 +20,7 @@ const Page = ({ params }: PageProps) => {
           {" "}
           <Breadcrumb title={params.name} />
         </div>
-        <div className=" mt-8">
+        <div className=" mt-8 mb-6">
           <ProductList course={data?.data} />
         </div>
       </div>

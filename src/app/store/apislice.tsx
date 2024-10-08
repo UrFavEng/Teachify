@@ -8,6 +8,7 @@ import {
   CreateReviewReq,
   dataProductsByCat,
   getAllCat,
+  getCategories,
   ProductById,
 } from "./types";
 export const apiSlice = createApi({
@@ -18,7 +19,7 @@ export const apiSlice = createApi({
     prepareHeaders(headers) {
       headers.set(
         "Authorization",
-        `Bearer a5d56bfa8fe46f31c13310a00272ff713ca1ea58896da0274e10aa9a02b80d38a095e890065f3a2bd9cab1b34f2baf4b570dd24bb04fe0fbfd4f3f891f3bdf8e6420c2f307ba2a9f1a3f04e247eb31891c5c010d2fca49d018af7b789797e11817129d384f3186c6c193c38f80d89ff4c315fcff373b06ec87b9afe51950ecba`
+        `Bearer 526666a9df115fd660ece5469eaa9b26b1a2379a4235cdd1adcf308c82912e65142d700f158d3d03cd29f2334c01fb385d718482083fe7a2f427d1b9c6f6419182a209e583d4161e73a8ce64a60ca80fceb5ad67b6402c544c978829ace4061cf74b14bf1ac12128ade4ff250a06a75e583a6f329eb9bce463c1fb2473c1f962`
       );
       return headers;
     },
@@ -33,9 +34,10 @@ export const apiSlice = createApi({
     }),
     getAllProductsByCat: builder.query<
       dataProductsByCat,
-      { cat: string | undefined }
+      { cat: string | undefined; price: string }
     >({
-      query: ({ cat }) => `products?filters[category][$eq]=${cat}&populate=*`,
+      query: ({ cat, price }) =>
+        `products?filters[category][title][$eqi]=${cat}&sort=price:${price}&populate=*`,
     }),
     addToCart: builder.mutation<ApiResponseAddToCart, AddToCartRequest>({
       query: (body) => ({
@@ -101,6 +103,9 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["review"],
     }),
+    getCategories: builder.query<getCategories, void>({
+      query: () => "categories", // المسار لجلب الفئات
+    }),
   }),
 });
 
@@ -120,4 +125,5 @@ export const {
   useAddReviewMutation,
   useUpdateReviewMutation,
   useDeleteReviewMutation,
+  useGetCategoriesQuery,
 } = apiSlice;

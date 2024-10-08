@@ -196,6 +196,7 @@ export interface CourseResponse {
 
 export interface ProductById {
   data: {
+    category: { title: string };
     banner: {
       alternativeText: string | null;
       caption: string | null;
@@ -218,7 +219,6 @@ export interface ProductById {
       url: string;
       width: number;
     };
-    category: string;
     createdAt: string;
     description: Array<RichTextBlock>;
     documentId: string;
@@ -303,6 +303,7 @@ export interface OrderById {
 //------------
 export interface dataProductsByCat {
   data: Array<{
+    category: { title: string };
     id: number;
     documentId: string;
     title: string;
@@ -317,7 +318,6 @@ export interface dataProductsByCat {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    category: string;
     whatsIncluded: Array<{
       children: Array<{
         text: string;
@@ -696,4 +696,17 @@ export interface CreateReviewReq {
     userId: string;
     imgUrl: string;
   };
+}
+//-
+interface CateRes {
+  createdAt: string;
+  documentId: string;
+  id: 2;
+  locale: null;
+  publishedAt: string;
+  title: string;
+  updatedAt: string;
+}
+export interface getCategories {
+  data: CateRes[];
 }

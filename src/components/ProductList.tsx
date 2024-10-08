@@ -19,7 +19,7 @@ interface ProductListProps {
         createdAt: string;
         updatedAt: string;
         publishedAt: string;
-        category: string;
+        category: { title: string };
         whatsIncluded: Array<{
           children: Array<{
             text: string;

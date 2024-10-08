@@ -6,6 +6,7 @@ import { PulseLoader } from "react-spinners";
 
 const ProductSection = () => {
   const { data, isError, isLoading } = useGetAllProductsQuery();
+  console.log("data", data);
   return (
     <div id="LatestProducts" className=" container mx-auto py-8 px-4 ">
       <h1 className=" mb-6 text-[24px] font-bold text-primary">

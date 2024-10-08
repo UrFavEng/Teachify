@@ -16,6 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { PulseLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import { useUser } from "@clerk/nextjs";
+import { ArrowDownWideNarrow } from "lucide-react";
 
 interface pageProps {
   params: { id: string };
@@ -27,6 +28,7 @@ export interface ReviewREQ {
 }
 const ProductPage = ({ params }: pageProps) => {
   const { user } = useUser();
+  const [price, setPrice] = useState("asc");
 
   const [value, setValue] = useState<number | null>(null);
   const [errRate, setErrRate] = useState<string>("");
@@ -43,8 +45,10 @@ const ProductPage = ({ params }: pageProps) => {
     id: params.id,
   });
   const { data: dataProductsByCat } = useGetAllProductsByCatQuery({
-    cat: data?.data.category,
+    cat: data?.data.category.title,
+    price,
   });
+  console.log("dataProductsByCat", dataProductsByCat);
   const [postReview] = useAddReviewMutation();
 
   const {
@@ -162,7 +166,17 @@ const ProductPage = ({ params }: pageProps) => {
         <div className=" py-8 mt-4">
           <h2 className=" text-primary font-bold mb-2 text-[28px] px-2">
             Similar products
-          </h2>
+          </h2>{" "}
+          <div className=" mt-[-8px] pl-1 ">
+            <p
+              onClick={() =>
+                price === "asc" ? setPrice("desc") : setPrice("asc")
+              }
+              className=" cursor-pointer text-primary font-medium  text-[16px] flex items-end gap-1"
+            >
+              Price <ArrowDownWideNarrow size={18} className=" text-primary" />{" "}
+            </p>
+          </div>
           {dataProductsByCat && <ProductList course={dataProductsByCat.data} />}
         </div>{" "}
       </div>
