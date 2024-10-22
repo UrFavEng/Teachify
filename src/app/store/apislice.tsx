@@ -16,8 +16,8 @@ import {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://strapi-ecom-1-production.up.railway.app/api/",
-    baseUrl: "http://localhost:1337/api/",
+    baseUrl: "https://strapi-ecom-1-production.up.railway.app/api/",
+    // baseUrl: "http://localhost:1337/api/",
     // prepareHeaders(headers) {
     //   headers.set(
     //     "Authorization",
