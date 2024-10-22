@@ -58,7 +58,7 @@ const MyLearning = () => {
           <div className=" flex-col md:flex-row   flex items-start justify-start gap-4  w-full xl:basis-[30%] mb-4 xl:mb-0 h-full">
             <Image
               src={item.banner.url}
-              className=" rounded-lg w-full  md:w-[400px]  xl:w-[480px] shadow-lg object-contain"
+              className=" rounded-lg w-full md:w-[400px]  xl:w-[480px] shadow-lg object-contain"
               alt="photo"
               width={400}
               height={400}
@@ -82,12 +82,12 @@ const MyLearning = () => {
               ))}
             </div>
           </div>
-          {/* <p className="my-4 font-medium text-[13px] leading-[15px] md:leading-normal md:text-[15px] text-sec">
+          <p className="my-4 font-medium text-[13px] leading-[15px] md:leading-normal md:text-[15px] text-sec">
             <span className=" text-[16px] font-bold text-[#464646] ">
               Description:
             </span>{" "}
             {item.description}
-          </p> */}
+          </p>
           <div className="join basis-[68%] join-vertical  bg-shadowOrBorder w-full">
             {item.files?.map((lec, index) => (
               <div
