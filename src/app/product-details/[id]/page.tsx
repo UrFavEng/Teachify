@@ -73,6 +73,7 @@ const ProductPage = ({ params }: pageProps) => {
           userName: user?.fullName,
           userId: user?.id,
           imgUrl: user?.imageUrl,
+          reviewed: `${user.id}${params.id}`,
         },
       };
       if (value !== null) {

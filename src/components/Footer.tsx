@@ -23,7 +23,7 @@ const Footer = () => {
                 height={45}
               />{" "}
               <span className=" text-[24px] text-primary font-bold ">
-                Teachify
+                Dynamic
               </span>
             </Link>
 

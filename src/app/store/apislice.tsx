@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AddToCartRequest,
+  ApiResMylearning,
   ApiResponseAddToCart,
   ApiResponseGetCartUser,
   CourseResponse,
@@ -9,20 +10,21 @@ import {
   dataProductsByCat,
   getAllCat,
   getCategories,
+  OrdersUserRes,
   ProductById,
 } from "./types";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://strapi-ecom-1-production.up.railway.app/api/",
-    // baseUrl: "http://localhost:1337/api/",
-    prepareHeaders(headers) {
-      headers.set(
-        "Authorization",
-        `Bearer 526666a9df115fd660ece5469eaa9b26b1a2379a4235cdd1adcf308c82912e65142d700f158d3d03cd29f2334c01fb385d718482083fe7a2f427d1b9c6f6419182a209e583d4161e73a8ce64a60ca80fceb5ad67b6402c544c978829ace4061cf74b14bf1ac12128ade4ff250a06a75e583a6f329eb9bce463c1fb2473c1f962`
-      );
-      return headers;
-    },
+    // baseUrl: "https://strapi-ecom-1-production.up.railway.app/api/",
+    baseUrl: "http://localhost:1337/api/",
+    // prepareHeaders(headers) {
+    //   headers.set(
+    //     "Authorization",
+    //     `Bearer 526666a9df115fd660ece5469eaa9b26b1a2379a4235cdd1adcf308c82912e65142d700f158d3d03cd29f2334c01fb385d718482083fe7a2f427d1b9c6f6419182a209e583d4161e73a8ce64a60ca80fceb5ad67b6402c544c978829ace4061cf74b14bf1ac12128ade4ff250a06a75e583a6f329eb9bce463c1fb2473c1f962`
+    //   );
+    //   return headers;
+    // },
   }),
   tagTypes: ["cart", "review"],
   endpoints: (builder) => ({
@@ -69,6 +71,11 @@ export const apiSlice = createApi({
         body,
       }),
     }),
+
+    getAllOrdersUser: builder.query<OrdersUserRes, string>({
+      query: () =>
+        `orders?filters[email][$eq]=engahmedshafek1@gmail.com&populate=*`,
+    }),
     getAllCat: builder.query<getAllCat, void>({
       query: () => `products?fields=category`,
     }),
@@ -77,7 +84,8 @@ export const apiSlice = createApi({
         `products?filters[title][$contains]=${title}&populate=*`,
     }),
     getReviewsByProductId: builder.query({
-      query: (productId) => `/reviews?product=${productId}`,
+      query: ({ productId }) =>
+        `reviews?filters[product][documentId][$eq]=${productId}&populate=product`,
       providesTags: ["review"],
     }),
     addReview: builder.mutation<void, CreateReviewReq>({
@@ -106,6 +114,17 @@ export const apiSlice = createApi({
     getCategories: builder.query<getCategories, void>({
       query: () => "categories", // المسار لجلب الفئات
     }),
+    myLearningCourses: builder.query<ApiResMylearning, string[]>({
+      query: (documentIds) => {
+        const filters = documentIds
+          .map(
+            (id: string, index: number) =>
+              `filters[$or][${index}][documentId]=${id}`
+          )
+          .join("&");
+        return `products?${filters}&populate=*`;
+      },
+    }),
   }),
 });
 
@@ -126,4 +145,6 @@ export const {
   useUpdateReviewMutation,
   useDeleteReviewMutation,
   useGetCategoriesQuery,
+  useGetAllOrdersUserQuery,
+  useMyLearningCoursesQuery,
 } = apiSlice;

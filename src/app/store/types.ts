@@ -196,6 +196,7 @@ export interface CourseResponse {
 
 export interface ProductById {
   data: {
+    Included: string[];
     category: { title: string };
     banner: {
       alternativeText: string | null;
@@ -220,7 +221,7 @@ export interface ProductById {
       width: number;
     };
     createdAt: string;
-    description: Array<RichTextBlock>;
+    description: string;
     documentId: string;
     files: Array<FileDataById>;
     id: number;
@@ -709,4 +710,189 @@ interface CateRes {
 }
 export interface getCategories {
   data: CateRes[];
+}
+
+//-----------
+interface ProductUser {
+  id: number;
+  documentId: string;
+  title: string;
+  description: Array<{
+    type: string;
+    children: Array<{
+      type: string;
+      text: string;
+    }>;
+  }>;
+  price: number;
+  instantDelivery: string | null;
+  whatsIncluded: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface OrderUser {
+  id: number;
+  documentId: string;
+  userName: string;
+  email: string;
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  products: ProductUser[];
+  localizations: null;
+}
+
+interface PaginationUser {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
+}
+
+interface MetaUser {
+  pagination: PaginationUser;
+}
+
+export interface OrdersUserRes {
+  data: OrderUser[];
+  meta: MetaUser;
+}
+//---
+interface DocumentItemMylearning {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  price: number;
+  instantDelivery: string | null;
+  whatsIncluded: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  banner: BannerMylearing;
+  files: FileItem[] | null;
+  orders: OrderMylearing[];
+  reviews: Review[];
+  category: CategoryMyleraing;
+  localizations: null;
+  Included: string[];
+}
+
+interface BannerMylearing {
+  id: number;
+  documentId: string;
+  name: string;
+  alternativeText: string | null;
+  caption: string | null;
+  width: number;
+  height: number;
+  formats: BannerFormatsMyleaing;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: ProviderMetadataMyleaing;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface BannerFormatsMyleaing {
+  thumbnail: ImageFormatMylearing;
+  small: ImageFormatMylearing;
+  medium: ImageFormatMylearing;
+  large: ImageFormatMylearing;
+}
+
+interface ImageFormatMylearing {
+  name: string;
+  hash: string;
+  ext: string;
+  mime: string;
+  path: string | null;
+  width: number;
+  height: number;
+  size: number;
+  sizeInBytes: number;
+  url: string;
+  provider_metadata: ProviderMetadataMyleaing;
+}
+
+interface ProviderMetadataMyleaing {
+  public_id: string;
+  resource_type: string;
+}
+
+interface FileItem {
+  id: number;
+  documentId: string;
+  name: string;
+  alternativeText: string | null;
+  caption: string | null;
+  width: number | null;
+  height: number | null;
+  formats: null;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: ProviderMetadataMyleaing;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface OrderMylearing {
+  id: number;
+  documentId: string;
+  userName: string;
+  email: string;
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface Review {
+  id: number;
+  documentId: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  userName: string;
+  userId: string;
+  imgUrl: string;
+  reviewed: string;
+}
+
+interface CategoryMyleraing {
+  id: number;
+  documentId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+export interface ApiResMylearning {
+  data: DocumentItemMylearning[];
 }

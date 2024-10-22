@@ -7,6 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Footer from "@/components/Footer";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
+import { usePathname } from "next/navigation";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -23,6 +24,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname(); // Get the current route
+  const hideNavbarRoutes = ["/sign-up", "/sign-in"]; // List of routes where the Navbar should be hiddens
   return (
     <ClerkProvider>
       <Provider store={store}>
@@ -30,9 +33,10 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} overflow-x-hidden ${geistMono.variable} antialiased bg-[#F3F4F7]`}
           >
-            <Header />
+            {" "}
+            {!hideNavbarRoutes.includes(pathname) && <Header />}
             {children}
-            <Footer />
+            {!hideNavbarRoutes.includes(pathname) && <Footer />}
           </body>
         </html>
       </Provider>

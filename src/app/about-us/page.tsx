@@ -24,14 +24,14 @@ const AboutUS = () => {
               <p className=" text-[14px] sm:text-[18px] leading-[20px] sm:leading-[24px] font-medium sm:font-semibold text-white w-[95%]">
                 Welcome to{" "}
                 <span className=" font-medium sm:font-bold text-[16px] sm:text-[24px] text-hoverColor">
-                  Teachify
+                  Dynamic
                 </span>
                 , an online platform that simplifies the way users explore and
                 purchase educational courses. The website offers a seamless
                 experience with features such as a homepage, categorized
                 sections, product details, search functionality, personal
                 profiles, and a user-friendly login system. Built with modern
-                technologies, Teachify is designed to provide an intuitive and
+                technologies, Dynamic is designed to provide an intuitive and
                 engaging experience for learners seeking personal growth and
                 knowledge.
               </p>
@@ -46,7 +46,7 @@ const AboutUS = () => {
             </div>
             <div className="collapse-content">
               <p className=" text-[14px] font-medium leading-[18px] sm:font-semibold text-[#f3f3f3]">
-                Teachify is developed using cutting-edge web technologies to
+                Dynamic is developed using cutting-edge web technologies to
                 ensure both performance and scalability:
               </p>
               <div className=" text-[16px] sm:font-semibold text-shadowOrBorder w-[95%]">
@@ -92,7 +92,7 @@ const AboutUS = () => {
             </div>
             <div className="collapse-content">
               <p className=" text-[14px] sm:text-[18px] leading-[20px] sm:leading-[24px] font-medium sm:font-semibold text-white w-[95%]">
-                The main goal of Teachify is to create a platform that is not
+                The main goal of Dynamic is to create a platform that is not
                 only functional but also elegant and professional, showcasing
                 both technical and design skills. It’s meant to highlight my
                 expertise in frontend development, backend integration, and
