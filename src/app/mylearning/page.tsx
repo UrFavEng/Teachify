@@ -63,7 +63,7 @@ const MyLearning = () => {
               width={400}
               height={400}
             />
-            <div className=" w-[500px]">
+            <div className=" md:w-[500px]">
               <h1 className=" w-full text-[24px] font-medium capitalize text-primary">
                 {item.title}
               </h1>
@@ -82,12 +82,12 @@ const MyLearning = () => {
               ))}
             </div>
           </div>
-          <p className="my-4 font-medium text-[13px] leading-[15px] md:leading-normal md:text-[15px] text-sec">
+          {/* <p className="my-4 font-medium text-[13px] leading-[15px] md:leading-normal md:text-[15px] text-sec">
             <span className=" text-[16px] font-bold text-[#464646] ">
               Description:
             </span>{" "}
             {item.description}
-          </p>
+          </p> */}
           <div className="join basis-[68%] join-vertical  bg-shadowOrBorder w-full">
             {item.files?.map((lec, index) => (
               <div

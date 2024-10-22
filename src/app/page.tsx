@@ -13,7 +13,7 @@ export default function Home() {
       <ProductSection />
       <div className="bg-white py-8 pt-[52px]">
         {" "}
-        <div className="bg-bgPrimary w-[90%] mx-auto sm:w-auto sm:mx-auto flex-col sm:flex-row rounded-md px-6 sm:px-12 container border-2 flex items-center justify-between py-8 shadow-2xl mb-8 mt-2">
+        <div className="container mx-auto py-8 px-4 bg-bgPrimary w-[90%]  sm:w-auto sm:mx-auto flex-col sm:flex-row rounded-md  sm:px-12  border-2 flex items-center justify-between  shadow-2xl mb-8 mt-2">
           <div className=" basis-[54%]">
             <h1 className=" text-[18px] lg:text-[24px] mb-1 md:mb-3 font-bold text-sec ">
               Take the leap, enroll today!
