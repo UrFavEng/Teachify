@@ -52,7 +52,7 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-[75vh] flex items-center justify-center">
+    <div className="min-h-[75vh] px-4 flex items-center justify-center">
       <section className="relative px-2 xl:px-8 flex flex-col gap-12 md:flex-row  items-center justify-between container mx-4 sm:mx-auto">
         <div className="">
           <div className="mx-auto max-w-lg">

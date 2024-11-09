@@ -35,7 +35,7 @@ export default function RootLayout({
           >
             {" "}
             {!hideNavbarRoutes.includes(pathname) && <Header />}
-            {children}
+            <div className=" ">{children}</div>
             {!hideNavbarRoutes.includes(pathname) && <Footer />}
           </body>
         </html>

@@ -150,7 +150,7 @@ interface ProductListProps {
 }
 const ProductList = ({ course }: ProductListProps) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-3 ">
+    <div className="grid px-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-3 ">
       {course?.map((e) => (
         <ProductCard course={e} key={e.id} />
       ))}
