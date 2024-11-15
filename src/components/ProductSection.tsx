@@ -9,7 +9,7 @@ const ProductSection = () => {
   console.log("data", data);
   return (
     <div id="LatestProducts" className=" container mx-auto py-8 px-4 ">
-      <h1 className=" mb-6 text-[24px] font-bold text-primary">
+      <h1 className=" px-4 mb-6 text-[24px] font-bold text-primary">
         Our Latest Products
       </h1>
       {isLoading && isFetching ? (
